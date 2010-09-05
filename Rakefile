@@ -5,12 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "keyhole"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{one-line summary of your gem}
+    gem.description = %Q{longer description of your gem}
     gem.email = "daniel@sykewarrior.com"
     gem.homepage = "http://github.com/buffpojken/keyhole"
     gem.authors = ["buffpojken"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.files = Dir['lib/**/*.rb']
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
