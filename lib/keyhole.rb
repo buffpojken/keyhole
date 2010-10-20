@@ -5,6 +5,7 @@ require File.dirname(__FILE__) + '/query_server'
 require 'em-websocket'
 require 'sinatra/base'
 require 'thin'
+require 'em-mysqlplus'
 
 
 EventMachine.run{
@@ -13,13 +14,14 @@ EventMachine.run{
   # of multiple servers. Or, it can just be an http-based reporting tool.
   class Querier < Sinatra::Base    
     get "/" do 
-      return "This is Keyhole, with #{$clients.length} clients connected"
+      return "This is Keyhole, with #{$clients.length} trackers and #{$webclients.length} webclients connected."
     end    
   end
   
   
-  $channel = EM::Channel.new
-  $clients = {}
+  $channel    = EM::Channel.new
+  $clients    = {}
+  $webclients = {}
     
   EventMachine::start_server "0.0.0.0", 5000, SatParser
   EventMachine::start_server "0.0.0.0", 5500, QueryServer
@@ -28,11 +30,11 @@ EventMachine.run{
   EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080, :debug => true) do |ws|
     ws.onopen{
       sid = $channel.subscribe { |msg| ws.send msg }      
-      $clients[sid] = true
+      $webclients[sid] = true
       ws.onmessage{|msg| $channel.push "Ninja!" }
       ws.onclose{
         $channel.unsubscribe(sid)
-        $clients.delete(sid)
+        $webclients.delete(sid)
       }      
     }    
   end
