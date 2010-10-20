@@ -11,7 +11,9 @@ class SatParser < EventMachine::Connection
   def receive_data(data)
     puts "Data received..."
     puts data.inspect
-    @db.query("insert into locations(latitude, longitude) value('ninja', 'neger');")
+    q = @db.query("insert into locations(latitude, longitude) value('ninja', 'neger');")
+    q.callback{|res| puts res.inspect}
+    q.errback{|res| puts "E:"+res.inspect}
     $channel << data
   end
   
