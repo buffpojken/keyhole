@@ -21,8 +21,8 @@ EventMachine.run{
   $channel = EM::Channel.new
   $clients = {}
     
-  EventMachine::start_server "sykewarrior.com", 5000, SatParser
-  EventMachine::start_server "sykewarrior.com", 5500, QueryServer
+  EventMachine::start_server "0.0.0.0", 5000, SatParser
+  EventMachine::start_server "0.0.0.0", 5500, QueryServer
   
   # TODO - Make sure this reads config from a config-file instead of this weird thing!
   EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080, :debug => true) do |ws|
