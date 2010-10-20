@@ -3,7 +3,6 @@ class SatParser < EventMachine::Connection
   attr_accessor :db  
     
   def post_init
-#    $clients(self)
     puts self.inspect
     db = EventMachine::MySQL.new(:host => "localhost", :username => "root", :database => "keyhole_development")
     $channel << "{event:'connect', 'type':'tracker'}"
