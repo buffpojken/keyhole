@@ -9,6 +9,8 @@ class SatParser < EventMachine::Connection
   end
   
   def receive_data(data)
+    puts data.inspect
+    
     data = data.split(",")
     self.imei = data[0]
     loc = {
@@ -23,7 +25,7 @@ class SatParser < EventMachine::Connection
     self.latest_location  = loc
     self.hdop             = loc[:hdop]
     
-    q = @db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_id) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop]}, #{loc[:tracker]});")
+    q = @db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_id) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop].gsub(/[^\d]/,"")}, #{loc[:tracker]});")
 
     q.callback{|res| puts res.inspect}
     q.errback{|res| puts "E:"+res.inspect}
