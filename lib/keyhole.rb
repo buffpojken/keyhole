@@ -6,6 +6,7 @@ require 'em-websocket'
 require 'sinatra/base'
 require 'thin'
 require 'em-mysqlplus'
+require 'json'
 
 
 EventMachine.run{
