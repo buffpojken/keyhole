@@ -2,7 +2,6 @@
 <head>
 	<title>Websocket Test Comms</title>
 	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
-  
 </head>
 <body>
 	
@@ -12,7 +11,7 @@
 	<script type="text/javascript">
 	function debug(str){ $("#comms").append("<p>" +  str); };
   
-	ws = new WebSocket("ws://sykewarrior.com:8080/");
+	ws = new WebSocket("ws://localhost:8080/");
   ws.onmessage = function(evt) { $("#msg").append("<p>"+evt.data+"</p>"); };
   ws.onclose = function() { debug("socket closed"); };
   ws.onopen = function() {

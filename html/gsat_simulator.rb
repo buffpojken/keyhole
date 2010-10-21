@@ -1,16 +1,29 @@
 require 'socket'
-
-a = "$IMEI NUMBER,Status,GPS_fix,GPSDate, GPSLocalTime,Longitude,Latitude,Altitude,speed,heading,number of satellites in use*HDOP !"
-b = "$123456564432,3,1,201004130343,14:32:23,59.34324,18.452r252,450,1,45,45!"
+require 'rexml/document'
 
 
-t = TCPSocket.new('127.0.0.1', 5000)
+
+t = TCPSocket.new('localhost', 5000)
+
+doc = REXML::Document.new(File.read("gps_data.xml"))
+data = []
+doc.elements.each('locations/location') do |p|
+  d = rand(10)
+  if d >= 2
+    loc = "$342432423432,432432,432432,23423432,32424,#{p.get_text('lng').to_s},#{p.get_text('lat').to_s},13,4,23.23,23*12"    
+  else
+    loc = "$342432423432,432432,432432,23423432,32424,0,0,13,4,23.23,23*12"    
+  end
+  data.push(loc)
+end
+
+current_index = 0
+puts data.length
 
 while(true) do
-  r = rand(5)
-  puts "Will sleep for #{r} seconds"
-  sleep r
-  
-  t.print(b)
-  
+  puts "Will sleep for 5 seconds"
+  sleep 5
+  t.print(data[current_index])
+  current_index += 1  
 end
+

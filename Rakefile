@@ -1,5 +1,9 @@
 require 'rubygems'
 require 'rake'
+# This is only to support migrations, my belief is that someone already has split this out
+# into a separate class in Rails 3! .ds
+require 'active_record'
+require 'yaml'
 
 begin
   require 'jeweler'
@@ -54,5 +58,14 @@ Rake::RDocTask.new do |rdoc|
 end
 
 
+# Add custom support for migrations, since no sane person manages to keep the 
+# database current in regards to scheme by hand .ds
+desc "Migrate the database through scripts in db/migrate. Target specific version with VERSION=x"
+task :migrate => :environment do  
+  ActiveRecord::Migrator.migrate('db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+end
 
-
+task :environment do
+  ActiveRecord::Base.establish_connection(YAML::load(File.open('config/database.yml')))
+#  ActiveRecord::Base.logger = Logger.new(STDOUT)
+end

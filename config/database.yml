@@ -1,0 +1,6 @@
+adapter: mysql2
+encoding: utf8
+database: keyhole_development
+username: root
+password:
+host: localhost

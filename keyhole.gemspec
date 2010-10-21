@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["buffpojken"]
-  s.date = %q{2010-10-20}
+  s.date = %q{2010-10-21}
   s.default_executable = %q{keyhole}
   s.description = %q{longer description of your gem}
   s.email = %q{daniel@sykewarrior.com}

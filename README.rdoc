@@ -1,3 +1,12 @@
 = Keyhole
 
 Move along, there's nothing to see here yet.
+
+= ToDo
+
+* Investigate if possible to send commands back to tracker to change reporting period
+* Formalize the protocol for GUI-->Socket communication
+* Investigate re-connect possibilities on both WebSocket and Tracker ends
+* Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)
+* Clean up the database-connections, make sure the app can share one connection instead of setting up a new one per client
+* Share global state for the database, to prevent per-row locking
