@@ -67,5 +67,6 @@ end
 
 task :environment do
   ActiveRecord::Base.establish_connection(YAML::load(File.open('config/database.yml')))
-#  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  # Load the environment used by the webgui
+  require File.expand_path(File.join(*%w[ lib webgui models.rb ]), File.dirname(__FILE__))  
 end

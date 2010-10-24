@@ -1,21 +1,28 @@
 class SatParser < EventMachine::Connection
     
-  attr_accessor :db, :imei, :latest_location, :hdop
+  attr_accessor :db, :imei, :latest_location, :hdop, :connected, :status
     
-  def post_init
+  def post_init(*args)
     $clients[self.signature] = true
-    @db = EventMachine::MySQL.new(:host => "localhost", :username => "root", :database => "keyhole_development")
     # Here, check if the device exists - if yes, update it to online and defer the response, 
     # if not - notify the GUI that an unknown tracker has tried to connect, did you forget to add it to the session?
-    $channel << "{event:'connect', 'type':'tracker'}"
+    self.connected  = false
+    self.status     = 2 
   end
   
   
   def receive_data(data)
     puts data.inspect
-    
     data = data.split(",")
-    self.imei = data[0]
+    # Store the unique reference to this specific tracker.
+    self.imei = data[0].gsub("$", "")    
+    # Since we can't identify the tracker until we receive an event, we'll defer notifying any clients about it
+    # until we CAN identify it. This means that these events will likely occur very quickly after one another
+    # if the tracker already has GPS-connectivity, otherwise, they might be further apart!
+    if !self.connected 
+      self.connected = true
+      $channel << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei}) 
+    end    
     
     loc = {
       :longitude  => parse_lng(data[5]),
@@ -23,7 +30,7 @@ class SatParser < EventMachine::Connection
       :altitude   => data[7],      
       :nos        => data[10].split(/\*/)[0],
       :hdop       => data[10].split(/\*/)[1],
-      :tracker    => data[0]
+      :tracker    => self.imei
     }
     
     self.latest_location  = loc
@@ -34,31 +41,50 @@ class SatParser < EventMachine::Connection
     # any iphone-like problems?
     if loc[:longitude] == "0" || loc[:latitude] == "0"
       # Update device status      
-      q = @db.query("update devices set status = 2 where imei = '#{loc[:tracker]}'")
+      # Move this into a single method!
+      self.status = 2
+      q = $db.query("update devices set status = 2 where imei = '#{loc[:tracker]}'")
       q.callback do |res|
-        $channel << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => '3', :status => 'no-fix'})        
+        $channel << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'no-fix'})        
       end      
       q.errback do |res|
         $channel << JSON.generate({:event => 'error', :type => 'database', :message => "something nice about this error here?"})        
       end
     else    
-      q = @db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_identifier) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop].gsub(/[^\d]/,"")}, '#{loc[:tracker]}');")
-
+      q = $db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_identifier, created_at) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop].gsub(/[^\d]/,"")}, '#{loc[:tracker].gsub(/$/, "")}', NOW());")
+      
       q.callback do |res|
-        q2 = @db.query("update devices set status = 1 where imei = '#{loc[:tracker]}'")
+        # Since this tracker just sent us valid coordinates, make sure it's flagged accordingly. 
+        q2 = $db.query("update devices set status = 1 where imei = '#{loc[:tracker]}' and status != 1")
+        q2.callback do |res|
+          if self.status != 1          
+            self.status = 1
+            $channel << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'ok'})                  
+          end
+        end
+        q2.errback do |res|
+          # Notify admin here, via some kind of error-management. Preferably sms, put push-notifications might be more
+          # economical!
+          logger.error "Error - could not update tracker-status in database!"
+        end
       end
       
+      # Clean up this error-callback, what's it used for? 
       q.errback{|res| puts "E:"+res.inspect}     
        
       # Merge current server-time into this response as well, so the GUI can update "latest response at" for the current device
-      $channel << JSON.generate(loc)
+      $channel << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
     end
 
   end
   
   def unbind
     # Here, send data on which tracker closed the connection as well - so we can update it in realtime
-    $channel << JSON.generate({'event' => 'disconnect', 'type' => 'tracker', 'id' => 3})
+    $clients.delete(self.signature)
+    query = $db.query("update devices set status = 0 where imei = '#{self.imei}'")
+    query.callback do |res|
+      $channel << JSON.generate({'event' => 'status-change', 'type' => 'tracker', 'tracker' => self.imei, 'status' => 'disconnect'})      
+    end
   end
   
 
