@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["buffpojken"]
-  s.date = %q{2010-10-24}
+  s.date = %q{2010-10-28}
   s.default_executable = %q{keyhole}
   s.description = %q{longer description of your gem}
   s.email = %q{daniel@sykewarrior.com}
@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
      "README.rdoc"
   ]
   s.files = [
-    "lib/em-websocket.rb",
-     "lib/em-websocket/connection.rb",
+    "lib/em-websocket/connection.rb",
      "lib/em-websocket/debugger.rb",
+     "lib/em-websocket/em-websocket.rb",
      "lib/em-websocket/handler.rb",
      "lib/em-websocket/handler75.rb",
      "lib/em-websocket/handler76.rb",
@@ -29,7 +29,12 @@ Gem::Specification.new do |s|
      "lib/em-websocket/websocket.rb",
      "lib/keyhole.rb",
      "lib/query_server.rb",
-     "lib/sat_parser.rb"
+     "lib/sat_parser.rb",
+     "lib/webgui/lib/helpers.rb",
+     "lib/webgui/models/device.rb",
+     "lib/webgui/models/location.rb",
+     "lib/webgui/models/user.rb",
+     "lib/webgui/webgui.rb"
   ]
   s.homepage = %q{http://github.com/buffpojken/keyhole}
   s.rdoc_options = ["--charset=UTF-8"]

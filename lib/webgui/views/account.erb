@@ -1,0 +1,11 @@
+<br /><br />
+<h1>Welcome, <%= @current_user.login %></h1>
+<p>
+<% if @latest_session %>
+	Jump back to <a href="/map/<%= @latest_session.id %>"><%= @latest_session.name %></a>
+<% else %>
+	You don't have any running sessions, why don't you let <a href="mailto:daniel@sykewarrior.com">admin</a> know about it? 
+	<br />
+	He can probably set up a session for you, if you are supposed to have one?
+<% end %>
+</p>

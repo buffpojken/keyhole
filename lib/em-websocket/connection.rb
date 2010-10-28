@@ -25,7 +25,6 @@ module EventMachine
         @state = :handshake
         @request = {}
         @data = ''
-
         debug [:initialize]
       end
 
@@ -70,7 +69,7 @@ module EventMachine
 
             @request = @handler.request
             @state = :connected
-            @onopen.call if @onopen
+            @onopen.call(@request) if @onopen
             return true
           rescue => e
             debug [:error, e]

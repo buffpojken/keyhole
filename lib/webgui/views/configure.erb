@@ -1,0 +1,16 @@
+
+<h1>Konfigurera devices</h1>
+<ul class="device-list">
+<% @devices.each do |device| %>
+	<li>
+		<%= device.name %> - <%= device.session.name %>
+		<br />
+		<a href="/configure/device/<%= device.id %>/edit">edit</a> or <a href="/configure/device/<%= device.id %>/destroy">destroy</a>
+	</li>
+<% end %>
+<li class="action">
+	<a href="/configure/device/new">add device</a>
+</li>	
+</ul>
+
+</div>

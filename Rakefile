@@ -65,8 +65,15 @@ task :migrate => :environment do
   ActiveRecord::Migrator.migrate('db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
 end
 
+desc "Runs the Ruby-code in db/seed.rb with the environment loaded, perfect for seeding the database!"
+task :seed => :environment do 
+  load File.join(*%w[db seed.rb])
+end
+
 task :environment do
   ActiveRecord::Base.establish_connection(YAML::load(File.open('config/database.yml')))
   # Load the environment used by the webgui
-  require File.expand_path(File.join(*%w[ lib webgui models.rb ]), File.dirname(__FILE__))  
+  Dir.glob(File.join(*%w[ lib webgui models *.rb ])).each do |fi|
+    require fi
+  end  
 end

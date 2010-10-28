@@ -1,0 +1,59 @@
+
+	
+	<div id="entities" class="collapsed">
+
+		<div id="entities_content">
+			<input id="ninja2" type="button" value="+" style="float:right; width:20px">
+			<input id="ninja" type="button" value="+" style="float:left; width:20px">
+			<ul id="device-list" class="devices">
+				<% @session.devices.each do |device| %>
+				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>">
+					<div class="color" style="background-color:<%= device.color %>"></div>
+					<span><%= device.name %></span>
+				</li>
+				<% end %>
+				<br class="clear"/>					
+			</ul>
+
+			<ul id="group-list" class="groups">
+				<li>
+					Norse Gods (1/1)				
+				</li>	
+				<li>
+					Mortal Sins (2/3)
+				</li>
+				<br class="clear"/>
+				<li>
+						Callsigns (0/3)
+				</li>
+				<li>
+						Real Names (4/5)
+				</li>	
+			</ul>
+			<br class="clear"/>
+		</div>
+	</div>
+	
+		<div id="map_canvas">
+						
+		</div>
+		
+		<div id="toolbar">
+		laser
+		</div>
+
+<% content_for :javascripts do %>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript">
+		window.keyhole_data = {'session_key':'<%= @session.session_key %>'};
+	</script>
+	<script type="text/javascript" src="/gsat.js"></script>
+<% end %>
+
+<% content_for :stylesheets do %>
+	<link href="/map.css" rel="stylesheet" type="text/css" />
+	<!-- iPad Specific Stylesheet -->
+	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="/style.ipad.css" type="text/css" />
+	<link rel="stylesheet" media="all and (orientation:portrait) and (max-device-width: 1024px)" href="/style.ipad.portrait.css">
+	<link rel="stylesheet" media="all and (orientation:landscape) and (max-device-width: 1024px)" href="/style.ipad.landscape.css">	
+<% end %>

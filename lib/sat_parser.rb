@@ -1,6 +1,6 @@
 class SatParser < EventMachine::Connection
     
-  attr_accessor :db, :imei, :latest_location, :hdop, :connected, :status
+  attr_accessor :db, :imei, :latest_location, :hdop, :connected, :status, :session_key
     
   def post_init(*args)
     $clients[self.signature] = true
@@ -12,7 +12,6 @@ class SatParser < EventMachine::Connection
   
   
   def receive_data(data)
-    puts data.inspect
     data = data.split(",")
     # Store the unique reference to this specific tracker.
     self.imei = data[0].gsub("$", "")    
@@ -20,9 +19,20 @@ class SatParser < EventMachine::Connection
     # until we CAN identify it. This means that these events will likely occur very quickly after one another
     # if the tracker already has GPS-connectivity, otherwise, they might be further apart!
     if !self.connected 
-      self.connected = true
-      $channel << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei}) 
-    end    
+      q = $db.query("select session_key from sessions where id = (select session_id from devices where imei = '#{self.imei}')")
+      q.callback do |res|
+        self.session_key = res.fetch_row.first
+        self.connected = true
+        $channels[self.session_key] << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei})
+      end    
+      q.errback do |res|
+        puts res.inspect
+        # Notify admin here that a device without session is trying to accomplish something, is there some
+        # configuration missed somewhere? 
+        puts "Something went horribly bad!!!"
+      end  
+      return 
+    end
     
     loc = {
       :longitude  => parse_lng(data[5]),
@@ -45,10 +55,10 @@ class SatParser < EventMachine::Connection
       self.status = 2
       q = $db.query("update devices set status = 2 where imei = '#{loc[:tracker]}'")
       q.callback do |res|
-        $channel << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'no-fix'})        
+        $channels[self.session_key] << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'no-fix'})        
       end      
       q.errback do |res|
-        $channel << JSON.generate({:event => 'error', :type => 'database', :message => "something nice about this error here?"})        
+        $channels[self.session_key] << JSON.generate({:event => 'error', :type => 'database', :message => "something nice about this error here?"})        
       end
     else    
       q = $db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_identifier, created_at) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop].gsub(/[^\d]/,"")}, '#{loc[:tracker].gsub(/$/, "")}', NOW());")
@@ -59,7 +69,7 @@ class SatParser < EventMachine::Connection
         q2.callback do |res|
           if self.status != 1          
             self.status = 1
-            $channel << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'ok'})                  
+            $channels[self.session_key] << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'ok'})                  
           end
         end
         q2.errback do |res|
@@ -73,7 +83,7 @@ class SatParser < EventMachine::Connection
       q.errback{|res| puts "E:"+res.inspect}     
        
       # Merge current server-time into this response as well, so the GUI can update "latest response at" for the current device
-      $channel << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
+        $channels[self.session_key] << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
     end
 
   end
@@ -83,8 +93,10 @@ class SatParser < EventMachine::Connection
     $clients.delete(self.signature)
     query = $db.query("update devices set status = 0 where imei = '#{self.imei}'")
     query.callback do |res|
-      $channel << JSON.generate({'event' => 'status-change', 'type' => 'tracker', 'tracker' => self.imei, 'status' => 'disconnect'})      
-    end
+      $channels.each_pair do |key, value|
+        value << JSON.generate({'event' => 'status-change', 'type' => 'tracker', 'tracker' => self.imei, 'status' => 'disconnect', 'channel' => key})   
+      end
+    end    
   end
   
 

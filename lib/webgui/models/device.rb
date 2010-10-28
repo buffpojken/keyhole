@@ -1,5 +1,7 @@
 # These are AR-models used by the WebGui.
 class Device < ActiveRecord::Base
+
+  belongs_to :session
   
   has_many :locations, :foreign_key => "tracker_identifier", :primary_key => "imei"
   
@@ -16,11 +18,5 @@ class Device < ActiveRecord::Base
     # Debug-code, must be removed, otherwise all models will have the test-trackers imei
     self.imei = "$342432423432"
   end
-  
-end
-
-class Location < ActiveRecord::Base
-  
-  belongs_to :device, :primary_key => :imei, :foreign_key => :tracker_identifier, :class_name => "Device"
   
 end

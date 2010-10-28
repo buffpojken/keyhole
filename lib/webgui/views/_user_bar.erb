@@ -1,0 +1,7 @@
+<% if logged_in? %>
+	<a href="/account"><%= @current_user.login %></a>
+	<% if @current_user.admin? %>
+	| <a href="/configure">configure</a>
+	<% end %>
+	 | <a href="/logout">logout</a> 
+<% end %>

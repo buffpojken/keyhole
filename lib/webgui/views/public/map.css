@@ -1,0 +1,144 @@
+#container{
+	width:100%;
+	margin:0px;
+	border:none;
+}
+
+/*		Map			*/
+
+#map_canvas{
+	width: 100%; 
+	height:100%;
+	position:absolute;
+	z-index:1;
+}
+
+/*	Entities		*/
+
+#entities{
+	width:100%;
+	z-index:2;
+	position:absolute;
+/*	-webkit-transition: height 0.4s linear;
+*/	background-image:url('images/toolbar_mask.png');
+}
+
+#entities_content{
+	color:white;
+	width:100%;
+	z-index:5;
+	top:0px;
+	padding:0px 0px 5px 0px;
+} 
+
+/*		Generic List	*/
+
+#device-list li:hover span, #group-list li:hover span{
+	text-decoration:underline;
+	cursor:pointer;
+}
+
+/*		Devices		*/
+		
+#device-list{
+	font-size:13px;
+	font-family:"Arial";
+	margin:4px 0px 0px 10px;
+	width:50%;
+	float:left;
+	min-width:600px;
+}
+
+#device-list li{
+	float:left;
+	padding:3px 3px 3px 20px;
+	margin:0px 10px 0px 0px;
+	width:80px;
+	overflow:hidden;
+	height:13px;
+	-webkit-transition: all 0.4s linear;	
+	-moz-transition: all 0.4s linear;
+}
+
+#device-list li.offline{
+	opacity:0.2;
+}
+
+#device-list li.no-fix{
+	text-decoration:line-through;
+}
+
+#device-list li .info{
+	width:160px;
+	font-size:11px;
+	margin:5px 0px 0px 5px;
+	line-height:1.5em;	
+}
+
+.color{
+	width:10px;
+	height:10px;
+	background-color:green;
+	float:left;
+	margin:1px 4px 0px 0px;
+}
+
+/*
+	This works perfectly to animate a detailed view with!
+*/
+#entities.device-expanded #device-list li{
+	height:95px;
+	width:160px;
+}
+/*
+#toolbar.device-expanded #group-list li{
+	height:13px;
+	width:120px;
+}
+
+#toolbar.group-expanded #device-list li{
+	height:13px;
+	width:80px;
+}*/
+
+#entities.group-expanded #group-list li{
+	height:95px;
+	width:200px;
+}
+
+
+
+/*		Groups		*/
+
+#group-list{
+	float:right;
+	font-size:13px;
+	font-family:"Arial";
+	margin:4px 0px 0px 10px;
+	width:40%;
+	min-width:400px;
+}
+
+#group-list li{
+	float:right;
+	padding:3px 3px 3px 20px;
+	margin:0px 10px 0px 0px;
+	width:120px;
+	overflow:hidden;
+	height:13px;
+	-webkit-transition: all 0.4s linear;	
+	-moz-transition: all 0.4s linear;
+}
+
+/*		Toolbar		*/
+		
+#toolbar{
+	width:300px;
+	background-image:url('images/toolbar_mask.png');
+	padding:15px;
+	position:absolute;
+	bottom:0px;
+	-moz-border-radius-topright:10px;
+	-webkit-border-top-right-radius:10px;
+	color:white;
+}
