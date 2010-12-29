@@ -10,7 +10,6 @@ Move along, there's nothing to see here yet.
 * Administrator-notifications when things have gone wrong
 * Sound re-connect strategies, and then fall back to ajax if required
 * Read port-configuration and the like from both commandline and config-file, dependent on environment
-* lägga till/ta bort/administrera devices
 * ändra/fixa visualisering av devices (färg,symbol,grupperingar)
 * hotzones/triggered zones with alarms/notifications (email,push notification,sms)
 * export data
@@ -28,3 +27,4 @@ Move along, there's nothing to see here yet.
 * Formalize the protocol for GUI-->Socket communication
 * Clean up the database-connections, make sure the app can share one connection instead of setting up a new one per client
 * se device-status (on,off,nofix,latest update)
+* lägga till/ta bort/administrera devices
