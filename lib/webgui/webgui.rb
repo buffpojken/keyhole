@@ -50,7 +50,6 @@ class WebGui < Sinatra::Base
   get '/account' do 
     authorize!
     @latest_session = @current_user.latest_session
-    
     erb :account
   end
   
@@ -131,8 +130,14 @@ class WebGui < Sinatra::Base
   end
   
   get "/map/:session_id" do
-    @session = Session.find(params[:session_id])    
-    erb :map
+    authorize!
+    @session = @current_user.sessions.find_by_id(params[:session_id])
+    if @session
+      erb :map
+    else
+      flash[:error] = "Not your session, punk!"
+      redirect '/account'
+    end
   end
   
   # Authentication/Session/Login

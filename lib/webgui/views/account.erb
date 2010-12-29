@@ -1,8 +1,19 @@
+<% if flash[:error]%>
+<p style="color:red"><%= flash[:error]%></p>
+<% end %>
+
 <br /><br />
 <h1>Welcome, <%= @current_user.login %></h1>
 <p>
 <% if @latest_session %>
-	Jump back to <a href="/map/<%= @latest_session.id %>"><%= @latest_session.name %></a>
+	Jump back to <a href="/map/<%= @latest_session.id %>"><%= @latest_session.name %></a> or choose one: 
+	<ul class="device-list">
+		<% @current_user.sessions.each do |session_object| %>
+		<li>
+			<a href="/map/<%= session_object.id%>"><%= session_object.name %></a>
+		</li>
+		<% end %>
+	</ul>	
 <% else %>
 	You don't have any running sessions, why don't you let <a href="mailto:daniel@sykewarrior.com">admin</a> know about it? 
 	<br />
