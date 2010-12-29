@@ -3,8 +3,6 @@
 class QueryServer < EventMachine::Connection
   def post_init
     send_data "#{$clients.length} clients connected"
-    
-    
   end
   
   def receive_data(data)

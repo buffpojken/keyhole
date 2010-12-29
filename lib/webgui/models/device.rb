@@ -15,8 +15,6 @@ class Device < ActiveRecord::Base
   
   def generate_color
     self.color = "#"+"%06x" % (rand * 0xffffff)
-    # Debug-code, must be removed, otherwise all models will have the test-trackers imei
-    self.imei = "$342432423432"
   end
   
 end

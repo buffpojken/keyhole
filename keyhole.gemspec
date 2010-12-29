@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["buffpojken"]
-  s.date = %q{2010-10-28}
+  s.date = %q{2010-12-06}
   s.default_executable = %q{keyhole}
   s.description = %q{longer description of your gem}
   s.email = %q{daniel@sykewarrior.com}
@@ -33,7 +33,25 @@ Gem::Specification.new do |s|
      "lib/webgui/lib/helpers.rb",
      "lib/webgui/models/device.rb",
      "lib/webgui/models/location.rb",
+     "lib/webgui/models/session.rb",
      "lib/webgui/models/user.rb",
+     "lib/webgui/views/_device_form.erb",
+     "lib/webgui/views/_user_bar.erb",
+     "lib/webgui/views/account.erb",
+     "lib/webgui/views/configure.erb",
+     "lib/webgui/views/frontpage.erb",
+     "lib/webgui/views/layout.erb",
+     "lib/webgui/views/map.erb",
+     "lib/webgui/views/new_device.erb",
+     "lib/webgui/views/public/gsat.js",
+     "lib/webgui/views/public/images/toolbar_mask.png",
+     "lib/webgui/views/public/jquery142.js",
+     "lib/webgui/views/public/main.css",
+     "lib/webgui/views/public/map.css",
+     "lib/webgui/views/public/style.css",
+     "lib/webgui/views/public/style.ipad.css",
+     "lib/webgui/views/public/style.ipad.landscape.css",
+     "lib/webgui/views/public/style.ipad.portrait.css",
      "lib/webgui/webgui.rb"
   ]
   s.homepage = %q{http://github.com/buffpojken/keyhole}

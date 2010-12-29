@@ -1,0 +1,27 @@
+<h1>Edit <%= @session.name %></h1>
+<form action="/configure/session/<%= @session.id %>/edit" method="post">
+	<input type="text" name="session[name]" value="<%= @session.name %>" />
+	<br /><br />
+	<input type="submit" value="Update" /> or <a href="/configure">back</a>
+	<br /><br />
+	<h2>Connected Devices</h2>
+	<ul class="device-list">
+		<% @session.devices.each do |device| %>
+			<li>
+				<%= device.name %>
+				<a href="/configure/device/<%= device.id%>/disconnect">remove</a>
+			</li>	
+		<% end %>
+	</ul>	
+	<br /><br />
+	<h2>Unconnected Devices</h2>
+	<ul class="device-list">
+		<% @devices.each do |device| %>
+			<li>
+				<%= device.name %>
+				<a href="/configure/device/<%= device.id%>/connect/<%= @session.id %>">add</a>
+			</li>	
+		<% end %>
+	</ul>	
+	<br /><br />
+</form>

@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/content_for'
 require 'rack-flash'
@@ -49,21 +50,84 @@ class WebGui < Sinatra::Base
   get '/account' do 
     authorize!
     @latest_session = @current_user.latest_session
+    
     erb :account
   end
   
   get "/configure" do 
-    @devices = Device.find(:all)    
+    @sessions = Session.find(:all)
     erb :configure
+  end
+  
+  get '/configure/session/new' do 
+    authorize!
+    erb :new_session
+  end
+
+  post '/configure/session/new' do 
+    @session = Session.create(params[:session].merge({:user_id => @current_user.id}))
+    if @session && @session.errors.empty?
+      redirect '/configure'
+    else
+      flash[:error] = "Could not create session"
+      redirect '/configure/session/new'
+    end
+  end
+
+  get '/configure/session/:id/edit' do 
+    authorize!
+    @session = Session.find(params[:id])
+    @devices = Device.find(:all, :conditions => ["session_id is null"])
+    erb :edit_session
+  end
+
+  post '/configure/session/:id/edit' do 
+    authorize!
+    @session = Session.find(params[:id])
+    if @session.update_attributes(params[:session]) && @session.set_devices(params[:devices])
+      redirect '/configure'
+    else
+      flash[:error] = "Could not update session-data"
+      redirect "/configure/session/#{@session.id}/edit"
+    end
+  end
+  
+  get '/configure/session/:id/destroy' do 
+    authorize!
+    @session = Session.find(params[:id])
+    if @session && @session.destroy
+      flash[:notice] = "Session removed"
+    else
+      flash[:error] = "Could not remove session"
+    end    
+    redirect '/configure'
   end
   
   get "/configure/device/new" do 
     erb :new_device
   end
   
-  get '/session/new' do 
-    authorize!
-    erb :new_session
+  post '/configure/device/new' do 
+    device = Device.create(params[:device])
+    if device && device.errors.empty?
+      flash[:notice] = "Device created"
+      redirect '/configure'
+    else
+      flash[:error] = "Could not create new device"
+    end
+  end
+
+  get '/configure/device/:id/disconnect' do 
+    device = Device.find(params[:id])
+    session_id = device.session_id
+    device.update_attribute(:session_id, nil)
+    redirect "/configure/session/#{session_id}/edit"
+  end
+  
+  get '/configure/device/:id/connect/:session_id' do 
+    device = Device.find(params[:id])
+    device.update_attribute(:session_id, params[:session_id])
+    redirect "/configure/session/#{params[:session_id]}/edit"    
   end
   
   get "/map/:session_id" do

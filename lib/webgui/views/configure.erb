@@ -1,13 +1,23 @@
+<% if flash[:notice]%>
+<p style="color:green"><%= flash[:notice]%></p>
+<% end %>
+<% if flash[:red]%>
+<p style="color:red"><%= flash[:red]%></p>
+<% end %>
+
 
 <h1>Konfigurera devices</h1>
 <ul class="device-list">
-<% @devices.each do |device| %>
+<% @sessions.each do |session_object| %>
 	<li>
-		<%= device.name %> - <%= device.session.name %>
+		<%= session_object.name %> - <b><%= session_object.devices.count %></b> devices
 		<br />
-		<a href="/configure/device/<%= device.id %>/edit">edit</a> or <a href="/configure/device/<%= device.id %>/destroy">destroy</a>
+		<a href="/configure/session/<%= session_object.id %>/edit">edit</a> or <a href="/configure/session/<%= session_object.id %>/destroy">destroy</a>
 	</li>
 <% end %>
+<li class="action">
+	<a href="/configure/session/new">add session</a>
+</li>	
 <li class="action">
 	<a href="/configure/device/new">add device</a>
 </li>	

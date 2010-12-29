@@ -15,7 +15,7 @@ begin
     gem.homepage = "http://github.com/buffpojken/keyhole"
     gem.authors = ["buffpojken"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    gem.files = Dir['lib/**/*.rb']
+    gem.files = Dir['lib/**/**']
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
