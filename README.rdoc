@@ -3,7 +3,6 @@
 Move along, there's nothing to see here yet.
 
 = ToDo
-* ändra/fixa visualisering av devices (färg,symbol,grupperingar)
 * Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)
 * hotzones/triggered zones with alarms/notifications (email,push notification,sms)
 * should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
@@ -27,3 +26,4 @@ Move along, there's nothing to see here yet.
 * Clean up the database-connections, make sure the app can share one connection instead of setting up a new one per client
 * se device-status (on,off,nofix,latest update)
 * lägga till/ta bort/administrera devices
+* ändra/fixa visualisering av devices (färg,symbol,grupperingar)
