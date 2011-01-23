@@ -64,6 +64,8 @@ class SatParser < EventMachine::Connection
       q = $db.query("insert into locations(longitude, latitude, altitude, nos, hdop, tracker_identifier, created_at) value('#{loc[:longitude]}','#{loc[:latitude]}', #{loc[:altitude]}, #{loc[:nos]}, #{loc[:hdop].gsub(/[^\d]/,"")}, '#{loc[:tracker].gsub(/$/, "")}', NOW());")
       
       q.callback do |res|
+        # This is where we want to do hotzone-matching
+        
         # Since this tracker just sent us valid coordinates, make sure it's flagged accordingly. 
         q2 = $db.query("update devices set status = 1 where imei = '#{loc[:tracker]}' and status != 1")
         q2.callback do |res|
@@ -83,7 +85,7 @@ class SatParser < EventMachine::Connection
       q.errback{|res| puts "E:"+res.inspect}     
        
       # Merge current server-time into this response as well, so the GUI can update "latest response at" for the current device
-        $channels[self.session_key] << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
+      $channels[self.session_key] << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
     end
 
   end

@@ -3,21 +3,20 @@
 Move along, there's nothing to see here yet.
 
 = ToDo
-
+* ändra/fixa visualisering av devices (färg,symbol,grupperingar)
+* Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)
+* hotzones/triggered zones with alarms/notifications (email,push notification,sms)
+* should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
 * Investigate if possible to send commands back to tracker to change reporting period
 * Investigate re-connect possibilities on both WebSocket and Tracker ends
-* Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)
 * Administrator-notifications when things have gone wrong
 * Sound re-connect strategies, and then fall back to ajax if required
 * Read port-configuration and the like from both commandline and config-file, dependent on environment
-* ändra/fixa visualisering av devices (färg,symbol,grupperingar)
-* hotzones/triggered zones with alarms/notifications (email,push notification,sms)
 * export data
 * time-slider (fly through time in an efficient manner)
 * lookup (what was the state at XX hours)
 * flag point in time as relevant with note
 * support for websockets if available, otherwise regular polling
-* should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
 
 
 

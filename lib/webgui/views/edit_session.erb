@@ -9,6 +9,7 @@
 		<% @session.devices.each do |device| %>
 			<li>
 				<%= device.name %>
+				<div style="width:30px; height:30px;border:1px solid black;" id="colorSelector"><div style="width:100%; height:100%"></div></div>
 				<a href="/configure/device/<%= device.id%>/disconnect">remove</a>
 			</li>	
 		<% end %>
@@ -25,3 +26,35 @@
 	</ul>	
 	<br /><br />
 </form>
+
+<% content_for :javascripts do %>
+	<link rel="stylesheet" href="/colorpicker/stylesheets/colorpicker.css" type="text/css" />
+
+
+	<script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/eye.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/utils.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/layout.js"></script>
+
+	<script type="text/javascript">	
+		$(document).ready(function(e){
+			$('#colorSelector').ColorPicker({
+				color: '#0000ff',
+				onShow: function (colpkr) {
+					$(colpkr).fadeIn(500);
+					return false;
+				},
+				onHide: function (colpkr) {					
+					$(colpkr).fadeOut(500);	
+					return false;
+				},
+				onChange: function (hsb, hex, rgb) {					
+					$('#colorSelector div').css('background-color', '#' + hex);
+
+				}
+			});
+		});	
+	</script>
+
+<% end %>
+

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["buffpojken"]
-  s.date = %q{2010-12-06}
+  s.date = %q{2011-01-23}
   s.default_executable = %q{keyhole}
   s.description = %q{longer description of your gem}
   s.email = %q{daniel@sykewarrior.com}
@@ -39,10 +39,44 @@ Gem::Specification.new do |s|
      "lib/webgui/views/_user_bar.erb",
      "lib/webgui/views/account.erb",
      "lib/webgui/views/configure.erb",
+     "lib/webgui/views/edit_session.erb",
      "lib/webgui/views/frontpage.erb",
      "lib/webgui/views/layout.erb",
      "lib/webgui/views/map.erb",
      "lib/webgui/views/new_device.erb",
+     "lib/webgui/views/new_session.erb",
+     "lib/webgui/views/public/colorpicker/images/Thumbs.db",
+     "lib/webgui/views/public/colorpicker/images/blank.gif",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_background.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_hex.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_hsb_b.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_hsb_h.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_hsb_s.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_indic.gif",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_overlay.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_rgb_b.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_rgb_g.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_rgb_r.png",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_select.gif",
+     "lib/webgui/views/public/colorpicker/images/colorpicker_submit.png",
+     "lib/webgui/views/public/colorpicker/images/custom_background.png",
+     "lib/webgui/views/public/colorpicker/images/custom_hex.png",
+     "lib/webgui/views/public/colorpicker/images/custom_hsb_b.png",
+     "lib/webgui/views/public/colorpicker/images/custom_hsb_h.png",
+     "lib/webgui/views/public/colorpicker/images/custom_hsb_s.png",
+     "lib/webgui/views/public/colorpicker/images/custom_indic.gif",
+     "lib/webgui/views/public/colorpicker/images/custom_rgb_b.png",
+     "lib/webgui/views/public/colorpicker/images/custom_rgb_g.png",
+     "lib/webgui/views/public/colorpicker/images/custom_rgb_r.png",
+     "lib/webgui/views/public/colorpicker/images/custom_submit.png",
+     "lib/webgui/views/public/colorpicker/images/select.png",
+     "lib/webgui/views/public/colorpicker/images/select2.png",
+     "lib/webgui/views/public/colorpicker/images/slider.png",
+     "lib/webgui/views/public/colorpicker/js/colorpicker.js",
+     "lib/webgui/views/public/colorpicker/js/eye.js",
+     "lib/webgui/views/public/colorpicker/js/layout.js",
+     "lib/webgui/views/public/colorpicker/js/utils.js",
+     "lib/webgui/views/public/colorpicker/stylesheets/colorpicker.css",
      "lib/webgui/views/public/gsat.js",
      "lib/webgui/views/public/images/toolbar_mask.png",
      "lib/webgui/views/public/jquery142.js",
