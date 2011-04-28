@@ -52,7 +52,6 @@ EventMachine.run{
     }
   end
   
-  
   EventMachine::start_server "0.0.0.0", 5000, SatParser
   EventMachine::start_server "0.0.0.0", 5500, QueryServer
     

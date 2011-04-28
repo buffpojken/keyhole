@@ -24,8 +24,9 @@
 <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 	<div id="container">
-
-<%= erb :_user_bar, :layout => false %>
+<% unless @no_bar %>
+	<%= erb :_user_bar, :layout => false %>
+<% end %>
 	<%= yield %>
 </div>
 

@@ -3,21 +3,19 @@
 Move along, there's nothing to see here yet.
 
 = ToDo
-* Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)
-* hotzones/triggered zones with alarms/notifications (email,push notification,sms)
+* Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)[Client-side looks good, but what about alarms?]
+* hotzones/triggered zones with alarms/notifications (email, push notification, sms)
 * should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
-* Investigate if possible to send commands back to tracker to change reporting period
+* Investigate if possible to send commands back to tracker to change reporting period [It should, this should just be a config issue]
 * Investigate re-connect possibilities on both WebSocket and Tracker ends
 * Administrator-notifications when things have gone wrong
-* Sound re-connect strategies, and then fall back to ajax if required
-* Read port-configuration and the like from both commandline and config-file, dependent on environment
-* export data
-* time-slider (fly through time in an efficient manner)
-* lookup (what was the state at XX hours)
+* Sound re-connect strategies, and then fall back to ajax if required [We should use ajax as a fallback]
+* Read port-configuration and the like from both commandline and config-file, dependent on environment [This should be a config-file, to support monit]
+* export data [download as csv or something]
+* time-slider (fly through time in an efficient manner) [low-prio]
+* lookup (what was the state at XX hours) [interesting, but low-prio]
 * flag point in time as relevant with note
-* support for websockets if available, otherwise regular polling
-
-
+* Think about a better overview-GUI
 
 == Done
 * Share global state for the database, to prevent per-row locking

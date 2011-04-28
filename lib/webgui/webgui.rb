@@ -133,6 +133,7 @@ class WebGui < Sinatra::Base
     authorize!
     @session = @current_user.sessions.find_by_id(params[:session_id])
     if @session
+      @no_bar = true
       erb :map
     else
       flash[:error] = "Not your session, punk!"
