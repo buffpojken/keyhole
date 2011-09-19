@@ -73,7 +73,7 @@ end
 task :environment do
   ActiveRecord::Base.establish_connection(YAML::load(File.open('config/database.yml')))
   # Load the environment used by the webgui
-  Dir.glob(File.join(*%w[ lib webgui models *.rb ])).each do |fi|
+  Dir.glob(File.join(*%w[ . lib webgui models *.rb ])).each do |fi|
     require fi
   end  
 end
