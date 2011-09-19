@@ -2,11 +2,20 @@
 
 Move along, there's nothing to see here yet.
 
+= Priority ToDo
+* Support multiple markers on the map
+* Better notifications
+* Better GUI in map (remove groups for now)
+* Support for setting the color of trackers
+* Configuration for databases and ports
+* Support for sql-exporting
+
+
+
 = ToDo
 * Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)[Client-side looks good, but what about alarms?]
 * hotzones/triggered zones with alarms/notifications (email, push notification, sms)
 * should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
-* Investigate if possible to send commands back to tracker to change reporting period [It should, this should just be a config issue]
 * Investigate re-connect possibilities on both WebSocket and Tracker ends
 * Administrator-notifications when things have gone wrong
 * Sound re-connect strategies, and then fall back to ajax if required [We should use ajax as a fallback]
@@ -25,3 +34,4 @@ Move along, there's nothing to see here yet.
 * se device-status (on,off,nofix,latest update)
 * lägga till/ta bort/administrera devices
 * ändra/fixa visualisering av devices (färg,symbol,grupperingar)
+* Investigate if possible to send commands back to tracker to change reporting period [It should, this should just be a config issue]
