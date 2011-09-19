@@ -23,7 +23,7 @@ li{
 	margin:0px 0px 0px 0px;
 }
 
-input[type='text']{
+input[type='text'],input[type='password']{
 	padding:10px;
 	width:300px;
 }

@@ -38,27 +38,35 @@
 	cursor:pointer;
 }
 
+#top-bar li{border:none; cursor:pointer; float:left}
+
 /*		Devices		*/
 		
 #device-list{
 	font-size:13px;
 	font-family:"Arial";
-	margin:4px 0px 0px 10px;
-	width:50%;
 	float:left;
 	min-width:600px;
+	margin:0px;
 }
 
 #device-list li{
 	float:left;
 	padding:3px 3px 3px 20px;
 	margin:0px 10px 0px 0px;
-	width:80px;
+	width:160px;
+	border:none;
 	overflow:hidden;
 	height:13px;
 	-webkit-transition: all 0.4s linear;	
 	-moz-transition: all 0.4s linear;
 }
+
+#device-list .details ul, #device-list .details li{
+	padding:0px;
+	margin:0px;
+}
+
 
 #device-list li.offline{
 	opacity:0.2;
@@ -88,46 +96,6 @@
 */
 #entities.device-expanded #device-list li{
 	height:95px;
-	width:160px;
-}
-/*
-#toolbar.device-expanded #group-list li{
-	height:13px;
-	width:120px;
-}
-
-#toolbar.group-expanded #device-list li{
-	height:13px;
-	width:80px;
-}*/
-
-#entities.group-expanded #group-list li{
-	height:95px;
-	width:200px;
-}
-
-
-
-/*		Groups		*/
-
-#group-list{
-	float:right;
-	font-size:13px;
-	font-family:"Arial";
-	margin:4px 0px 0px 10px;
-	width:40%;
-	min-width:400px;
-}
-
-#group-list li{
-	float:right;
-	padding:3px 3px 3px 20px;
-	margin:0px 10px 0px 0px;
-	width:120px;
-	overflow:hidden;
-	height:13px;
-	-webkit-transition: all 0.4s linear;	
-	-moz-transition: all 0.4s linear;
 }
 
 /*		Toolbar		*/

@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/content_for'
+require 'sinatra/assetpack'
 require 'rack-flash'
 require 'active_record'
 require 'mysql2'
@@ -21,16 +22,25 @@ end
 class WebGui < Sinatra::Base    
   use Rack::Session::Cookie
   use Rack::Flash
-  register Sinatra::ContentFor
-  
   set :root, File.dirname(__FILE__)
   set :public, Proc.new { File.join(root, 'views/public')}
+
+
+  register Sinatra::ContentFor
+#  register Sinatra::AssetPack
+  
   
   # helpers
   helpers Sinatra::ContentFor
   helpers Helpers
   
-  # callback
+  # assets{
+  #   js :map, '/map.js', [
+  #     '/vendor/zepto.min.js', 
+  #     '/keyhole.coffee'
+  #   ]
+  # }
+  
   
   before '/map*' do 
     authorize!
@@ -83,7 +93,7 @@ class WebGui < Sinatra::Base
   post '/configure/session/:id/edit' do 
     authorize!
     @session = Session.find(params[:id])
-    if @session.update_attributes(params[:session]) && @session.set_devices(params[:devices])
+    if @session.update_attributes(params[:session])
       redirect '/configure'
     else
       flash[:error] = "Could not update session-data"
@@ -133,7 +143,7 @@ class WebGui < Sinatra::Base
     authorize!
     @session = @current_user.sessions.find_by_id(params[:session_id])
     if @session
-      @no_bar = true
+      @in_map = true
       erb :map
     else
       flash[:error] = "Not your session, punk!"

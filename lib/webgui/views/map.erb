@@ -3,51 +3,42 @@
 	<div id="entities" class="collapsed">
 
 		<div id="entities_content">
-			<input id="ninja2" type="button" value="+" style="float:right; width:20px">
-			<input id="ninja" type="button" value="+" style="float:left; width:20px">
+			<div id="top-bar">
+				<ul>
+					<li id="expand-top-bar"> 					
+						<img src="/images/icons/12-eye.png" />
+					</li>
+					<li id="toggle-follow"> 					
+						<img src="/images/icons/55-network.png" />
+					</li>
+				</ul>
+			</div>
 			<ul id="device-list" class="devices">
-				<% @session.devices.each do |device| %>
-				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>">
+				<% [@session.devices+@session.devices+@session.devices+@session.devices+@session.devices].flatten.each do |device| %>
+				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>" data-device-name="<%= device.name %>">
 					<div class="color" style="background-color:<%= device.color %>"></div>
 					<span><%= device.name %></span>
+					<div class="details">
+						2011-03-12, 12:23
+					</div>
 				</li>
 				<% end %>
 				<br class="clear"/>					
 			</ul>
-
-			<ul id="group-list" class="groups">
-				<li>
-					Norse Gods (1/1)				
-				</li>	
-				<li>
-					Mortal Sins (2/3)
-				</li>
-				<br class="clear"/>
-				<li>
-						Callsigns (0/3)
-				</li>
-				<li>
-						Real Names (4/5)
-				</li>	
-			</ul>
-			<br class="clear"/>
 		</div>
+		
 	</div>
 	
 		<div id="map_canvas">
 						
 		</div>
 		
-		<div id="toolbar">
-		laser
-		</div>
-
 <% content_for :javascripts do %>
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript">
 		window.keyhole_data = {'session_key':'<%= @session.session_key %>', 'host':'<%= request.host %>'};
 	</script>
-	<script type="text/javascript" src="/gsat.js"></script>
+	<script type="text/javascript" src="/keyhole.js"></script>
 <% end %>
 
 <% content_for :stylesheets do %>

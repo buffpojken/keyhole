@@ -3,7 +3,7 @@ class Device < ActiveRecord::Base
 
   belongs_to :session
   
-  has_many :locations, :foreign_key => "tracker_identifier", :primary_key => "imei"
+  has_many :locations, :foreign_key => "tracker_identifier", :primary_key => "imei", :dependent => :destroy
   
   before_create :generate_color
   

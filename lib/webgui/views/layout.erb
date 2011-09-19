@@ -24,7 +24,7 @@
 <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 	<div id="container">
-<% unless @no_bar %>
+<% unless @in_map %>
 	<%= erb :_user_bar, :layout => false %>
 <% end %>
 	<%= yield %>
@@ -33,8 +33,8 @@
   <!--[if lt IE 7 ]>
     <script src="js/dd_belatedpng.js?v=1"></script>
   <![endif]-->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-  <script>!window.jQuery && document.write('<script src="jquery142.js"><\/script>')</script>
-	<% yield_content :javascripts %>
+  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+  	<script>!window.jQuery && document.write('<script src="jquery142.js"><\/script>')</script>
+		<% yield_content :javascripts %>
 </body>
 </html>

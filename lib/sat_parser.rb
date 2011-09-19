@@ -55,7 +55,7 @@ class SatParser < EventMachine::Connection
       self.status = 2
       q = $db.query("update devices set status = 2 where imei = '#{loc[:tracker]}'")
       q.callback do |res|
-        $channels[self.session_key] << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'no-fix'})        
+        $channels[self.session_key] << JSON.generate({:event => 'status', :type => 'tracker', :id => self.imei, :status => 'no-fix'})        
       end      
       q.errback do |res|
         $channels[self.session_key] << JSON.generate({:event => 'error', :type => 'database', :message => "something nice about this error here?"})        
@@ -71,7 +71,7 @@ class SatParser < EventMachine::Connection
         q2.callback do |res|
           if self.status != 1          
             self.status = 1
-            $channels[self.session_key] << JSON.generate({:event => 'status-change', :type => 'tracker', :tracker => self.imei, :status => 'ok'})                  
+            $channels[self.session_key] << JSON.generate({:event => 'status', :type => 'tracker', :id => self.imei, :status => 'ok'})                  
           end
         end
         q2.errback do |res|
@@ -85,7 +85,7 @@ class SatParser < EventMachine::Connection
       q.errback{|res| puts "E:"+res.inspect}     
        
       # Merge current server-time into this response as well, so the GUI can update "latest response at" for the current device
-      $channels[self.session_key] << JSON.generate({:event => 'location', :tracker => self.imei, :location => loc})
+      $channels[self.session_key] << JSON.generate({:event => 'location', :id => self.imei, :location => loc})
     end
 
   end
@@ -96,7 +96,7 @@ class SatParser < EventMachine::Connection
     query = $db.query("update devices set status = 0 where imei = '#{self.imei}'")
     query.callback do |res|
       $channels.each_pair do |key, value|
-        value << JSON.generate({'event' => 'status-change', 'type' => 'tracker', 'tracker' => self.imei, 'status' => 'disconnect', 'channel' => key})   
+        value << JSON.generate({'event' => 'status', 'type' => 'tracker', 'id' => self.imei, 'status' => 'disconnect', 'channel' => key})   
       end
     end    
   end
@@ -105,23 +105,25 @@ class SatParser < EventMachine::Connection
   private
   
   def parse_lat(lat)
-    fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
-    sum = lat[1..2].to_f + fraction
-    if(lat[0] == 'S')
-      return -sum
-    else 
-      return sum
-    end 
+    # fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
+    #    sum = lat[1..2].to_f + fraction
+    #    if(lat[0] == 'S')
+    #      return -sum
+    #    else 
+    #      return sum
+    #    end 
+    lat
   end
   
   def parse_lng(lng)
-    fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
-    sum = lng[1..3].to_f + fraction
-    if(lng[0] == 'W')
-      return -sum
-    else 
-      return sum
-    end
+    # fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
+    # sum = lng[1..3].to_f + fraction
+    # if(lng[0] == 'W')
+    #   return -sum
+    # else 
+    #   return sum
+    # end
+    lng
   end
     
 end

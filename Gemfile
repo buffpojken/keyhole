@@ -1,0 +1,10 @@
+source 'http://rubygems.org'
+
+gem 'sinatra', '1.2.6'
+gem 'sinatra-content-for', '0.2'
+gem 'mysql2', '0.2.3'
+gem 'addressable', '2.2.6'
+gem 'em-mysqlplus', '0.1.5'
+gem 'rack-flash', '0.1.2'
+gem 'mysqlplus', '0.1.2'
+gem 'sinatra-assetpack', :require => 'sinatra/assetpack'
