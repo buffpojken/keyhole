@@ -72,7 +72,7 @@
 	opacity:0.2;
 }
 
-#device-list li.no-fix{
+#device-list li.no-fix span.device-name{
 	text-decoration:line-through;
 }
 

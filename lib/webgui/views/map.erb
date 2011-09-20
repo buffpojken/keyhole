@@ -17,7 +17,7 @@
 				<% [@session.devices+@session.devices+@session.devices+@session.devices+@session.devices].flatten.each do |device| %>
 				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>" data-device-name="<%= device.name %>">
 					<div class="color" style="background-color:<%= device.color %>"></div>
-					<span><%= device.name %></span>
+					<span class="device-name"><%= device.name %></span>
 					<div class="details">
 						2011-03-12, 12:23
 					</div>
