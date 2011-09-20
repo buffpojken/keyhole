@@ -110,3 +110,26 @@
 	-webkit-border-top-right-radius:10px;
 	color:white;
 }
+
+/*		Marker		*/
+		
+@-webkit-keyframes pulse {
+  0% {
+    opacity: 1.0;
+    -webkit-transform: scale(1.05);
+  }
+  40% {
+    opacity: 0.5;
+    -webkit-transform: scale(0.85);
+  }
+  100% {
+    opacity: 1.0;
+    -webkit-transform: scale(1.05);
+  }
+}
+#map_canvas img[src*="blue_dot_circle.png"] {
+  -webkit-animation-name: pulse;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+}
