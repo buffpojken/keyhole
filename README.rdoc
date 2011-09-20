@@ -3,8 +3,6 @@
 Move along, there's nothing to see here yet.
 
 = Priority ToDo
-* Support multiple markers on the map
-* Better notifications
 * Better GUI in map (remove groups for now, support for turning tracking on/off)
 * More robustness (not crashing when not finding imei, when channel doesn't exist)
 * Support for setting the color of trackers
@@ -28,6 +26,8 @@ Move along, there's nothing to see here yet.
 * Think about a better overview-GUI
 
 == Done
+* Better notifications
+* Support multiple markers on the map
 * Share global state for the database, to prevent per-row locking
 * Support multiple separate sessions of trackers (i.e. webservice-setup)
 * Formalize the protocol for GUI-->Socket communication

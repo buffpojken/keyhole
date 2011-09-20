@@ -21,9 +21,13 @@ class SatParser < EventMachine::Connection
     if !self.connected 
       q = $db.query("select session_key from sessions where id = (select session_id from devices where imei = '#{self.imei}')")
       q.callback do |res|
-        self.session_key = res.fetch_row.first
-        self.connected = true
-        $channels[self.session_key] << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei})
+        unless res.fetch_row.nil?
+          self.session_key = res.fetch_row.first
+          self.connected = true
+          $channels[self.session_key] << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei})
+        else
+          # Notify admin here that there's a tracker with an unknown IMEI .daniel
+        end
       end    
       q.errback do |res|
         puts res.inspect
