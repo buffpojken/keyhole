@@ -4,7 +4,6 @@ Move along, there's nothing to see here yet.
 
 = Priority ToDo
 * Better GUI in map (remove groups for now, support for turning tracking on/off)
-* More robustness (not crashing when not finding imei, when channel doesn't exist)
 * Support for setting the color of trackers
 * Configuration for databases and ports
 * Support for sql-exporting
@@ -26,6 +25,7 @@ Move along, there's nothing to see here yet.
 * Think about a better overview-GUI
 
 == Done
+* More robustness (not crashing when not finding imei, when channel doesn't exist)
 * Better notifications
 * Support multiple markers on the map
 * Share global state for the database, to prevent per-row locking
