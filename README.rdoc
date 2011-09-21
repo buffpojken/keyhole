@@ -3,7 +3,6 @@
 Move along, there's nothing to see here yet.
 
 = Priority ToDo
-* Better GUI in map (remove groups for now, support for turning tracking on/off)
 * Show the latest X positions
 * Configuration for databases and ports
 * Support for sql-exporting
@@ -13,9 +12,7 @@ Move along, there's nothing to see here yet.
 * Meditate on where to do the actual hotzone-matching takes place (in the database? in event-machine? client-side?)[Client-side looks good, but what about alarms?]
 * hotzones/triggered zones with alarms/notifications (email, push notification, sms)
 * should not be dependent on jquery - it is WAY too large (this is halfway-done, jquery is just used for element-fetching now, not any heavy stuff)
-* Investigate re-connect possibilities on both WebSocket and Tracker ends
 * Administrator-notifications when things have gone wrong
-* Sound re-connect strategies, and then fall back to ajax if required [We should use ajax as a fallback]
 * Read port-configuration and the like from both commandline and config-file, dependent on environment [This should be a config-file, to support monit]
 * export data [download as csv or something]
 * time-slider (fly through time in an efficient manner) [low-prio]
@@ -24,6 +21,8 @@ Move along, there's nothing to see here yet.
 * Think about a better overview-GUI
 
 == Done
+* Better GUI in map (remove groups for now, support for turning tracking on/off)
+* Investigate re-connect possibilities on both WebSocket and Tracker ends
 * Support for setting the color of trackers
 * More robustness (not crashing when not finding imei, when channel doesn't exist)
 * Better notifications
