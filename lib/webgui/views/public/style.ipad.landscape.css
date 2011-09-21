@@ -2,17 +2,9 @@
 	font-size:13px;
 	font-family:"Arial";
 	margin:4px 0px 0px 10px;
-	width:60%;
-	float:left;
-	min-width:500px;
+	width:790px;
 }
 
-#group-list{
-	float:right;
-	font-size:13px;
-	font-family:"Arial";
-	margin:4px 0px 0px 10px;
-	width:20%;
-	min-width:230px;
+#device-list li{
+	width:130px;
 }
-

@@ -85,7 +85,7 @@ class SatParser < EventMachine::Connection
       q.errback{|res| puts "E:"+res.inspect}     
        
       # Merge current server-time into this response as well, so the GUI can update "latest response at" for the current device
-      $channels[self.session_key] << JSON.generate({:event => 'location', :id => self.imei, :location => loc})
+      $channels[self.session_key] << JSON.generate({:event => 'location', :id => self.imei, :location => loc, :timestamp => Time.now.strftime("%y-%m-%d %H:%M")})
     end
 
   end

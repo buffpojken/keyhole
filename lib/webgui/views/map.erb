@@ -6,20 +6,18 @@
 			<div class="top-bar">
 				<ul>
 					<li id="expand-top-bar"> 					
-						<img src="/images/icons/cursor_H_split_icon&24.png" />
+						<img src="/images/icons/cursor_H_split_icon&16.png" />
 					</li>
-					<li id="toggle-follow"> 					
-						<img src="/images/icons/55-network.png" />
-					</li>
+					<li id="toggle-follow" class=""></li>
 				</ul>
 			</div>
 			<ul id="device-list" class="devices">
-				<% @session.devices.each do |device| %>
+				<% [@session.devices+@session.devices+@session.devices].flatten.each do |device| %>
 				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>" data-device-name="<%= device.name %>" data-device-color="<%= device.color %>">
 					<div class="color" style="background-color:#<%= device.color %>"></div>
 					<span class="device-name"><%= device.name %></span>
 					<div class="details">
-						2011-03-12, 12:23
+						 Update: <span class="updated-at">n/a</span>
 					</div>
 				</li>
 				<% end %>
@@ -28,10 +26,10 @@
 			<div class="top-bar right">
 				<ul>
 					<li id="zoom-in"> 					
-						<img src="/images/icons/sq_plus_icon&24.png" />
+						<img src="/images/icons/sq_plus_icon&16.png" />
 					</li>
 					<li id="zoom-out"> 					
-						<img src="/images/icons/sq_minus_icon&24.png" />
+						<img src="/images/icons/sq_minus_icon&16.png" />
 					</li>
 				</ul>
 			</div>
