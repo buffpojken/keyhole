@@ -3,7 +3,6 @@
 Move along, there's nothing to see here yet.
 
 = Priority ToDo
-* Support for setting the color of trackers
 * Better GUI in map (remove groups for now, support for turning tracking on/off)
 * Show the latest X positions
 * Configuration for databases and ports
@@ -25,6 +24,7 @@ Move along, there's nothing to see here yet.
 * Think about a better overview-GUI
 
 == Done
+* Support for setting the color of trackers
 * More robustness (not crashing when not finding imei, when channel doesn't exist)
 * Better notifications
 * Support multiple markers on the map
