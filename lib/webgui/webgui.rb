@@ -4,6 +4,7 @@ require 'sinatra/content_for'
 require 'sinatra/assetpack'
 require 'rack-flash'
 require 'active_record'
+require 'rest-client'
 require 'mysql2'
 Dir.glob(File.dirname(__FILE__)+"/models/*.rb").each do |fi|
   require fi

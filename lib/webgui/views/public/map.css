@@ -38,6 +38,8 @@
 	cursor:pointer;
 }
 
+#top-bar{width:150px;float:left}
+
 #top-bar li{border:none; cursor:pointer; float:left}
 
 /*		Devices		*/
@@ -127,9 +129,9 @@
     -webkit-transform: scale(1.05);
   }
 }
-#map_canvas img[src*="blue_dot_circle.png"] {
+#map_canvas img[src*="marker.png"] {
   -webkit-animation-name: pulse;
-  -webkit-animation-duration: 4s;
+  -webkit-animation-duration: 6s;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-in-out;
 }

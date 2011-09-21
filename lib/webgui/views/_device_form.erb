@@ -4,8 +4,42 @@
 		<input type="text" name="device[name]" placeholder="name"/>
 		<br />
 		<input type="text" name="device[imei]" placeholder="imei"/>
+		<br />
+		<div class="colorsquare">color</div>
+		<input type="hidden" name="device[color]" class="color-input" />
 		<br /><br />
 		<input type="submit" value="Go!" />
 		
 	
 </form>
+
+<% content_for :javascripts do %>
+	<link rel="stylesheet" href="/colorpicker/stylesheets/colorpicker.css" type="text/css" />
+
+
+	<script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/eye.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/utils.js"></script>
+	<script type="text/javascript" src="/colorpicker/js/layout.js"></script>
+
+	<script type="text/javascript">	
+		$(document).ready(function(e){
+			$('.colorsquare').ColorPicker({
+				color: '#0000ff',
+				onShow: function (colpkr) {
+					$(colpkr).fadeIn(500);
+					return false;
+				},
+				onHide: function (colpkr) {					
+					$(colpkr).fadeOut(500);	
+					return false;
+				},
+				onChange: function (hsb, hex, rgb) {
+					$(this.data('colorpicker').el).css({'background-color':'#'+hex, 'color':'white'});
+					$(".color-input").val(hex);
+				}
+			});
+		});	
+	</script>
+
+<% end %>
