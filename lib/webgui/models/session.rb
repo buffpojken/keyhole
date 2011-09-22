@@ -2,6 +2,7 @@ require 'digest/sha1'
 class Session < ActiveRecord::Base
   
   has_many :devices
+  has_many :layers
   
   before_create :generate_session_key
   before_destroy :release_devices
