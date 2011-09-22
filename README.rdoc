@@ -5,6 +5,7 @@ Move along, there's nothing to see here yet.
 = Priority ToDo
 * Show the latest X positions
 * Configuration for databases and ports
+* Adding support for uploading the KML-file, instead of using a URL
 * Support for sql-exporting
 
 = ToDo
@@ -21,6 +22,7 @@ Move along, there's nothing to see here yet.
 * Think about a better overview-GUI
 
 == Done
+* Adding support for displaying KML-files from the backend
 * Better GUI in map (remove groups for now, support for turning tracking on/off)
 * Investigate re-connect possibilities on both WebSocket and Tracker ends
 * Support for setting the color of trackers
