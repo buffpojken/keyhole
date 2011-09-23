@@ -12,7 +12,7 @@
 				</ul>
 			</div>
 			<ul id="device-list" class="devices">
-				<% [@session.devices+@session.devices+@session.devices].flatten.each do |device| %>
+				<% @session.devices.each do |device| %>
 				<li data-device-id="<%= device.imei %>" id="<%= device.imei %>" data-device-name="<%= device.name %>" data-device-color="<%= device.color %>">
 					<div class="color" style="background-color:#<%= device.color %>"></div>
 					<span class="device-name"><%= device.name %></span>
