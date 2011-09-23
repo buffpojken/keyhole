@@ -15,10 +15,10 @@ class Device < ActiveRecord::Base
   
   def generate_color
     a = RestClient.post "http://young-fire-8657.heroku.com/", {
-      :file => File.new(File.join('webgui', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
+      :file => File.new(File.join('..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
       :hex  => "#"+self.color
     }
-    file = File.open(File.join('webgui', 'views', 'public', 'images', self.color + '_marker.png'), 'w+')
+    file = File.open(File.join('..', 'views', 'public', 'images', self.color + '_marker.png'), 'w+')
     file.puts a
     file.close
   end
