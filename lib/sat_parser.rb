@@ -45,6 +45,8 @@ class SatParser < EventMachine::Connection
       :tracker    => self.imei
     }
     
+    puts "Parsed: #{loc.inspect}"
+    
     self.latest_location  = loc
     self.hdop             = loc[:hdop]
     # Update tracker-status here dependent on whether we have a valid position or not!
