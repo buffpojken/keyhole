@@ -12,7 +12,7 @@
 	<li>
 		<%= session_object.name %> - <b><%= session_object.devices.count %></b> devices
 		<br />
-		<a href="/configure/session/<%= session_object.id %>/edit">edit</a> or <a href="/configure/session/<%= session_object.id %>/destroy">destroy</a>
+		<a href="/configure/session/<%= session_object.id %>/edit">edit</a>, <a href="/configure/session/<%= session_object.id %>/layers">layers</a> or <a href="/configure/session/<%= session_object.id %>/destroy">destroy</a>
 	</li>
 <% end %>
 <li class="action">
@@ -20,6 +20,9 @@
 </li>	
 <li class="action">
 	<a href="/configure/device/new">add device</a>
+</li>	
+<li class="action">
+	<a href="/configure/layer/new">add layer</a>
 </li>	
 </ul>
 

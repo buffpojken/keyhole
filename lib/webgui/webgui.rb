@@ -28,20 +28,13 @@ class WebGui < Sinatra::Base
 
 
   register Sinatra::ContentFor
-#  register Sinatra::AssetPack
+
   
   
   # helpers
   helpers Sinatra::ContentFor
   helpers Helpers
-  
-  # assets{
-  #   js :map, '/map.js', [
-  #     '/vendor/zepto.min.js', 
-  #     '/keyhole.coffee'
-  #   ]
-  # }
-  
+
   
   before '/map*' do 
     authorize!
@@ -110,7 +103,55 @@ class WebGui < Sinatra::Base
     else
       flash[:error] = "Could not remove session"
     end    
-    redirect '/configure'
+    redirect to('/configure')
+  end
+  
+  get '/configure/session/:id/layers' do 
+    @session  = Session.find(params[:id])
+    @layers   = Layer.find(:all, :conditions => ["session_id is null"])
+    erb :layers
+  end
+
+  get '/configure/session/:id/layer/:layer_id' do 
+    @session  = Session.find(params[:id])
+    layer     = Layer.find(params[:layer_id])
+    unless @session.layers << layer && @session.save
+      flash[:error] = "Could not add layer, try again!"
+    end
+    redirect back
+  end
+  
+  get '/configure/layer/:id/remove' do 
+    layer = Layer.find(params[:id])
+    if layer.update_attribute(:session_id, nil)
+      flash[:notice] = "Layer deactivated"
+    else
+      flash[:error] = "Could not deactivate layer"
+    end
+    redirect back
+  end
+  
+  get '/configure/layer/:id/destroy' do 
+    if Layer.destroy(params[:id])
+      flash[:notice] = "Layer deleted"
+    else
+      flash[:error] = "Layer could not be deleted, try again!"
+    end
+    redirect back
+  end
+  
+  get '/configure/layer/new' do 
+    erb :new_layer
+  end
+  
+  post '/configure/layer/new' do 
+    layer = Layer.create(params[:layer])
+    if layer && layer.errors.empty? 
+      redirect to('/configure')
+    else
+      flash[:error] = "Could not add layer, try again!"
+      erb :new_layer
+    end
   end
   
   get "/configure/device/new" do 

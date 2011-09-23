@@ -1,0 +1,29 @@
+<h1>Edit <%= @session.name %>: Layers</h1>
+<form action="/configure/session/<%= @session.id %>/edit" method="post">
+	<input type="text" name="session[name]" value="<%= @session.name %>" />
+	<br /><br />
+	<input type="submit" value="Update" /> or <a href="/configure">back</a>
+	<br /><br />
+</form>
+	<h2>Active Layers</h2>
+	<ul class="device-list">
+		<% @session.layers.each do |layer| %>
+			<li>
+				<%= layer.name %>
+				<a href="/configure/layer/<%= layer.id%>/remove">deactivate</a>
+			</li>	
+		<% end %>
+	</ul>	
+	<br /><br />
+	<h2>Inactive Layers</h2>
+	<ul class="device-list">
+		<% @layers.each do |layer| %>
+			<li>
+				<%= layer.name %>
+				<a href="/configure/session/<%= @session.id%>/layer/<%= layer.id %>">activate</a> | <a href="/configure/layer/<%= layer.id%>/destroy">delete</a>
+			</li>	
+		<% end %>
+	</ul>	
+	<br /><br />
+
+
