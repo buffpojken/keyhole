@@ -14,6 +14,7 @@ class Device < ActiveRecord::Base
   private
   
   def generate_color
+    puts system('pwd')
     a = RestClient.post "http://young-fire-8657.heroku.com/", {
       :file => File.new(File.join('..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
       :hex  => "#"+self.color
