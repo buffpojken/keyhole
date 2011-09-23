@@ -1,2 +1,14 @@
 #!/usr/bin/env ruby
-load File.dirname(__FILE__) + '/../lib/keyhole.rb'
+
+# load File.dirname(__FILE__) + '/../lib/keyhole.rb'
+
+require 'rubygems'
+require 'daemons'
+
+Daemons.run(File.dirname(__FILE__) + '/../lib/keyhole.rb', {
+  :dir_mode   => :script, 
+  :dir        => '../tmp/logs',
+  :backtrace  => true, 
+  :multiple   => false, 
+  :monitor    => false
+})

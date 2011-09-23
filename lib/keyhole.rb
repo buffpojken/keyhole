@@ -8,10 +8,6 @@ require 'thin'
 require 'em-mysqlplus'
 require 'json'
 
-if $0 == __FILE__
-  # This will differentiate between running this as the gem, and running in debug-mode! 
-  # Use this to set debug-flags, change the coordinate-parsing and stuff like that!
-end
 
 
 
