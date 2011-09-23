@@ -54,7 +54,7 @@ class SatParser < EventMachine::Connection
     # against previous locations to san-check if speed and location-difference matches to prevent
     # any iphone-like problems?
 
-    if loc[:longitude] == "0.0" || loc[:latitude] == "0.0"
+    if loc[:longitude] == 0.0 || loc[:latitude] == 0.0
       # Update device status      
       # Move this into a single method!
       self.status = 2
