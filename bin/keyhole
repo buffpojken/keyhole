@@ -10,5 +10,6 @@ Daemons.run(File.dirname(__FILE__) + '/../lib/keyhole.rb', {
   :dir        => '../tmp/logs',
   :backtrace  => true, 
   :multiple   => false, 
-  :monitor    => false
+  :monitor    => false, 
+  :log_output => true
 })
