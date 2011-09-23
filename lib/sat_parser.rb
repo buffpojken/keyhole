@@ -34,6 +34,8 @@ class SatParser < EventMachine::Connection
       return 
     end
     
+    puts "Received: #{data.inspect}"
+    
     loc = {
       :longitude  => parse_lng(data[5]),
       :latitude   => parse_lat(data[6]),
@@ -49,6 +51,7 @@ class SatParser < EventMachine::Connection
     # This should use a better version of san-checking than this, perhaps we ought to validate it 
     # against previous locations to san-check if speed and location-difference matches to prevent
     # any iphone-like problems?
+
     if loc[:longitude] == "E0" || loc[:latitude] == "N0"
       # Update device status      
       # Move this into a single method!
