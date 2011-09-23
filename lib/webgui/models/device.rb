@@ -14,12 +14,11 @@ class Device < ActiveRecord::Base
   private
   
   def generate_color
-    puts system('pwd')
     a = RestClient.post "http://young-fire-8657.heroku.com/", {
-      :file => File.new(File.join('..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
+      :file => File.new(File.join(File.dirname(__FILE__), '..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
       :hex  => "#"+self.color
     }
-    file = File.open(File.join('..', 'views', 'public', 'images', self.color + '_marker.png'), 'w+')
+    file = File.open(File.join(File.dirname(__FILE__),'..', 'views', 'public', 'images', self.color + '_marker.png'), 'w+')
     file.puts a
     file.close
   end
