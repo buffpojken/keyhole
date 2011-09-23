@@ -52,6 +52,7 @@
 	font-family:"Arial";
 	float:left;
 	min-width:600px;
+	max-width:1000px;
 	margin:10px 0px 0px 30px;
 }
 
