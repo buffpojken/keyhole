@@ -35,4 +35,14 @@ module Helpers
   def logout!
     session[:user_id], @current_user = nil, nil
   end
+  
+  def mark_by_status(device)
+    if device.status == 0
+      'offline'
+    elsif device.status == 2
+      'no-fix'
+    else
+      ''
+    end
+  end
 end
