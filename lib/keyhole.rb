@@ -25,7 +25,8 @@ EventMachine.run{
   # TODO - Make sure this reads config from a config-file instead of this weird thing!
   ws_server = EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080, :debug => true) do |ws|
     ws.onopen{|req|
-      # Attach this socket to the correct channel.
+      # Attach this socket to the correct channel.      
+      puts req.inspect
       path = req["Path"].gsub("/", "")
       if $channels[path].nil?
         $channels[path] = EventMachine::Channel.new
