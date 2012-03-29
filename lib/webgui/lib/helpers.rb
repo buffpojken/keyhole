@@ -36,10 +36,10 @@ module Helpers
     session[:user_id], @current_user = nil, nil
   end
   
-  def mark_by_status(device)
-    if device.status == 0
+  def mark_by_status(status)
+    if status == 0
       'offline'
-    elsif device.status == 2
+    elsif status == 2
       'no-fix'
     else
       ''
