@@ -11,7 +11,7 @@ require "eventmachine"
   message_processor_03 message_processor_06
   handler_factory handler handler75 handler76 handler03 handler05 handler06 handler07 handler08 handler13
 ].each do |file|
-  require "./#{file}"
+  require "#{File.join(File.dirname(__FILE__), file)}"
 end
 
 unless ''.respond_to?(:getbyte)
