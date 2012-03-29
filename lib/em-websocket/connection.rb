@@ -5,27 +5,59 @@ module EventMachine
     class Connection < EventMachine::Connection
       include Debugger
 
-      attr_reader :state, :request
-
-      # Set the max frame lenth to very high value (10MB) until there is a
-      # limit specified in the spec to protect against malicious attacks
-      MAXIMUM_FRAME_LENGTH = 10 * 1024 * 1024
+      attr_writer :max_frame_size
 
       # define WebSocket callbacks
       def onopen(&blk);     @onopen = blk;    end
       def onclose(&blk);    @onclose = blk;   end
       def onerror(&blk);    @onerror = blk;   end
       def onmessage(&blk);  @onmessage = blk; end
+      def onping(&blk);     @onping = blk;    end
+      def onpong(&blk);     @onpong = blk;    end
+
+      def trigger_on_message(msg)
+        @onmessage.call(msg) if @onmessage
+      end
+      def trigger_on_open
+        @onopen.call if @onopen
+      end
+      def trigger_on_close
+        @onclose.call if @onclose
+      end
+      def trigger_on_ping(data)
+        @onping.call(data) if @onping
+      end
+      def trigger_on_pong(data)
+        @onpong.call(data) if @onpong
+      end
+      def trigger_on_error(reason)
+        return false unless @onerror
+        @onerror.call(reason)
+        true
+      end
 
       def initialize(options)
         @options = options
         @debug = options[:debug] || false
         @secure = options[:secure] || false
         @tls_options = options[:tls_options] || {}
-        @state = :handshake
-        @request = {}
         @data = ''
+
         debug [:initialize]
+      end
+
+      # Use this method to close the websocket connection cleanly
+      # This sends a close frame and waits for acknowlegement before closing
+      # the connection
+      def close_websocket(code = nil, body = nil)
+        if code && !(4000..4999).include?(code)
+          raise "Application code may only use codes in the range 4000-4999"
+        end
+
+        # If code not defined then set to 1000 (normal closure)
+        code ||= 1000
+
+        close_websocket_private(code, body)
       end
 
       def post_init
@@ -35,54 +67,55 @@ module EventMachine
       def receive_data(data)
         debug [:receive_data, data]
 
-        @data << data
-        dispatch
+        if @handler
+          @handler.receive_data(data)
+        else
+          dispatch(data)
+        end
+      rescue HandshakeError => e
+        debug [:error, e]
+        trigger_on_error(e)
+        # Errors during the handshake require the connection to be aborted
+        abort
+      rescue WSProtocolError => e
+        debug [:error, e]
+        trigger_on_error(e)
+        close_websocket_private(e.code)
+      rescue => e
+        debug [:error, e]
+        # These are application errors - raise unless onerror defined
+        trigger_on_error(e) || raise(e)
+        # There is no code defined for application errors, so use 3000
+        # (which is reserved for frameworks)
+        close_websocket_private(3000)
       end
 
       def unbind
         debug [:unbind, :connection]
 
-        @state = :closed
-        @onclose.call if @onclose
+        @handler.unbind if @handler
+      rescue => e
+        debug [:error, e]
+        # These are application errors - raise unless onerror defined
+        trigger_on_error(e) || raise(e)
       end
 
-      def dispatch
-        case @state
-          when :handshake
-            handshake
-          when :connected
-            process_message
-          else raise WebSocketError, "invalid state: #{@state}"
-        end
-      end
-
-      def handshake
-        if @data.match(/<policy-file-request\s*\/>/)
+      def dispatch(data)
+        if data.match(/\A<policy-file-request\s*\/>/)
           send_flash_cross_domain_file
           return false
         else
-          debug [:inbound_headers, @data]
-          begin
-            @handler = HandlerFactory.build(@data, @secure, @debug)
-            @data = ''
-            send_data @handler.handshake
-
-            @request = @handler.request
-            @state = :connected
-            @onopen.call(@request) if @onopen
-            return true
-          rescue => e
-            debug [:error, e]
-            process_bad_request(e)
+          debug [:inbound_headers, data]
+          @data << data
+          @handler = HandlerFactory.build(self, @data, @secure, @debug)
+          unless @handler
+            # The whole header has not been received yet.
             return false
           end
+          @data = nil
+          @handler.run
+          return true
         end
-      end
-
-      def process_bad_request(reason)
-        @onerror.call(reason) if @onerror
-        send_data "HTTP/1.1 400 Bad request\r\n\r\n"
-        close_connection_after_writing
       end
 
       def send_flash_cross_domain_file
@@ -96,94 +129,100 @@ module EventMachine
         close_connection_after_writing
       end
 
-      def process_message
-        debug [:message, @data]
-
-        # This algorithm comes straight from the spec
-        # http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76#section-4.2
-
-        error = false
-
-        while !error
-          pointer = 0
-          frame_type = @data[pointer].to_i
-          pointer += 1
-
-          if (frame_type & 0x80) == 0x80
-            # If the high-order bit of the /frame type/ byte is set
-            length = 0
-
-            loop do
-              b = @data[pointer].to_i
-              return false unless b
-              pointer += 1
-              b_v = b & 0x7F
-              length = length * 128 + b_v
-              break unless (b & 0x80) == 0x80
-            end
-
-            # Addition to the spec to protect against malicious requests
-            if length > MAXIMUM_FRAME_LENGTH
-              close_with_error(DataError.new("Frame length too long (#{length} bytes)"))
-              return false
-            end
-
-            if @data[pointer+length-1] == nil
-              debug [:buffer_incomplete, @data.inspect]
-              # Incomplete data - leave @data to accumulate
-              error = true
-            else
-              # Straight from spec - I'm sure this isn't crazy...
-              # 6. Read /length/ bytes.
-              # 7. Discard the read bytes.
-              @data = @data[(pointer+length)..-1]
-
-              # If the /frame type/ is 0xFF and the /length/ was 0, then close
-              if length == 0
-                send_data("\xff\x00")
-                @state = :closing
-                close_connection_after_writing
-              else
-                error = true
-              end
-            end
-          else
-            # If the high-order bit of the /frame type/ byte is _not_ set
-            msg = @data.slice!(/^\x00([^\xff]*)\xff/)
-            if msg
-              msg.gsub!(/\A\x00|\xff\z/, '')
-              if @state == :closing
-                debug [:ignored_message, msg]
-              else
-                msg.force_encoding('UTF-8') if msg.respond_to?(:force_encoding)
-                @onmessage.call(msg) if @onmessage
-              end
-            else
-              error = true
-            end
+      def send(data)
+        # If we're using Ruby 1.9, be pedantic about encodings
+        if data.respond_to?(:force_encoding)
+          # Also accept ascii only data in other encodings for convenience
+          unless (data.encoding == Encoding.find("UTF-8") && data.valid_encoding?) || data.ascii_only?
+            raise WebSocketError, "Data sent to WebSocket must be valid UTF-8 but was #{data.encoding} (valid: #{data.valid_encoding?})"
           end
+          # This labels the encoding as binary so that it can be combined with
+          # the BINARY framing
+          data.force_encoding("BINARY")
+        else
+          # TODO: Check that data is valid UTF-8
         end
 
-        false
+        if @handler
+          @handler.send_text_frame(data)
+        else
+          raise WebSocketError, "Cannot send data before onopen callback"
+        end
       end
 
-      # should only be invoked after handshake, otherwise it
-      # will inject data into the header exchange
+      # Send a ping to the client. The client must respond with a pong.
       #
-      # frames need to start with 0x00-0x7f byte and end with
-      # an 0xFF byte. Per spec, we can also set the first
-      # byte to a value betweent 0x80 and 0xFF, followed by
-      # a leading length indicator
-      def send(data)
-        debug [:send, data]
-        ary = ["\x00", data, "\xff"]
-        ary.collect{ |s| s.force_encoding('UTF-8') if s.respond_to?(:force_encoding) }
-        send_data(ary.join)
+      # In the case that the client is running a WebSocket draft < 01, false
+      # is returned since ping & pong are not supported
+      #
+      def ping(body = '')
+        if @handler
+          @handler.pingable? ? @handler.send_frame(:ping, body) && true : false
+        else
+          raise WebSocketError, "Cannot ping before onopen callback"
+        end
       end
 
-      def close_with_error(message)
-        @onerror.call(message) if @onerror
-        close_connection_after_writing
+      # Send an unsolicited pong message, as allowed by the protocol. The
+      # client is not expected to respond to this message.
+      #
+      # em-websocket automatically takes care of sending pong replies to
+      # incoming ping messages, as the protocol demands.
+      #
+      def pong(body = '')
+        if @handler
+          @handler.pingable? ? @handler.send_frame(:pong, body) && true : false
+        else
+          raise WebSocketError, "Cannot ping before onopen callback"
+        end
+      end
+
+      # Test whether the connection is pingable (i.e. the WebSocket draft in
+      # use is >= 01)
+      def pingable?
+        if @handler
+          @handler.pingable?
+        else
+          raise WebSocketError, "Cannot test whether pingable before onopen callback"
+        end
+      end
+
+      def request
+        @handler ? @handler.request : {}
+      end
+
+      def state
+        @handler ? @handler.state : :handshake
+      end
+
+      # Returns the maximum frame size which this connection is configured to
+      # accept. This can be set globally or on a per connection basis, and
+      # defaults to a value of 10MB if not set.
+      #
+      # The behaviour when a too large frame is received varies by protocol,
+      # but in the newest protocols the connection will be closed with the
+      # correct close code (1009) immediately after receiving the frame header
+      #
+      def max_frame_size
+        @max_frame_size || WebSocket.max_frame_size
+      end
+
+      private
+
+      # As definited in draft 06 7.2.2, some failures require that the server
+      # abort the websocket connection rather than close cleanly
+      def abort
+        close_connection
+      end
+
+      def close_websocket_private(code, body = nil)
+        if @handler
+          debug [:closing, code]
+          @handler.close_websocket(code, body)
+        else
+          # The handshake hasn't completed - should be safe to terminate
+          abort
+        end
       end
     end
   end
