@@ -19,7 +19,7 @@ module EventMachine
         @onmessage.call(msg) if @onmessage
       end
       def trigger_on_open
-        @onopen.call if @onopen
+        @onopen.call(request) if @onopen
       end
       def trigger_on_close
         @onclose.call if @onclose
