@@ -42,7 +42,12 @@ class WebGui < Sinatra::Base
   
   before '/configure*' do 
     authorize!(:require_admin => true)
-  end  
+  end     
+  
+  after do
+    ActiveRecord::Base.clear_active_connections!
+  end
+  
   
   # code
 
