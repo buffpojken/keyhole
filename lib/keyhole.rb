@@ -27,7 +27,7 @@ EventMachine.run{
     ws.onopen{|req|
       # Attach this socket to the correct channel.      
       puts req.inspect
-      path = req["Path"].gsub("/", "")
+      path = req["path"].gsub("/", "")
       if $channels[path].nil?
         $channels[path] = EventMachine::Channel.new
       end
