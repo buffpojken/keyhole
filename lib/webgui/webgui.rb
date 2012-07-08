@@ -13,28 +13,20 @@ Dir.glob(File.dirname(__FILE__)+"/lib/*.rb").each do |fi|
   require fi
 end
 
-# This can implement the AJAX-based query-server, without any need
-# of multiple servers. Or, it can just be an http-based reporting tool.
-# This should be moved into it's own folder-setup, since this most probably
-# will server the actual GUI as well? 
-
-
-
 class WebGui < Sinatra::Base    
   use Rack::Session::Cookie
   use Rack::Flash
   set :root, File.dirname(__FILE__)
-  set :public, Proc.new { File.join(root, 'views/public')}
+  set :public_folder, Proc.new { File.join(root, 'views/public')}
 
+  set :twilio_sid, "AC7aad28b36ad141399cd3057da04103cc"
+  set :twilio_token, "b26da84950d227342f7545d026db51c3"
 
   register Sinatra::ContentFor
-
-  
   
   # helpers
   helpers Sinatra::ContentFor
   helpers Helpers
-
   
   before '/map*' do 
     authorize!

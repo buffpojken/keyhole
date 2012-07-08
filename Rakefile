@@ -47,10 +47,9 @@ task :test => :check_dependencies
 
 task :default => :test
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "keyhole #{version}"
   rdoc.rdoc_files.include('README*')
