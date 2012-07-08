@@ -6,6 +6,9 @@ require 'rack-flash'
 require 'active_record'
 require 'rest-client'
 require 'mysql2'
+require 'builder'
+require 'twilio-ruby'
+
 Dir.glob(File.dirname(__FILE__)+"/models/*.rb").each do |fi|
   require fi
 end
@@ -180,6 +183,9 @@ class WebGui < Sinatra::Base
     authorize!
     @session = @current_user.sessions.find_by_id(params[:session_id])
     if @session
+      capability = Twilio::Util::Capability.new(settings.twilio_sid, settings.twilio_token)
+      capability.allow_client_outgoing 'APcbd124a0d6fb21fe475d4191287e5773'
+      @twilio_token = capability.generate
       @in_map = true
       erb :map
     else
@@ -204,6 +210,13 @@ class WebGui < Sinatra::Base
   get '/logout' do 
     logout!
     redirect "/"
+  end
+
+  # Phone Integration
+  
+  post '/call' do 
+    @number = params['PhoneNumber']
+    builder :trial
   end
 
 end

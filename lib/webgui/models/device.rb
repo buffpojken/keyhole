@@ -13,6 +13,7 @@ class Device < ActiveRecord::Base
   
   private
   
+  # This is ugly and must be killed! .daniel
   def generate_color
     a = RestClient.post "http://young-fire-8657.heroku.com/", {
       :file => File.new(File.join(File.dirname(__FILE__), '..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
