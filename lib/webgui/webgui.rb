@@ -19,8 +19,6 @@ class WebGui < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, 'views/public')}
 
-  set :twilio_sid, "AC7aad28b36ad141399cd3057da04103cc"
-  set :twilio_token, "b26da84950d227342f7545d026db51c3"
 
   register Sinatra::ContentFor
   
