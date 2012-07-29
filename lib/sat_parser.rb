@@ -15,6 +15,7 @@ class SatParser < EventMachine::Connection
     data = data.split(",")
     # Store the unique reference to this specific tracker.
     self.imei = data[0].gsub("$", "")    
+    puts data.inspect
     # Since we can't identify the tracker until we receive an event, we'll defer notifying any clients about it
     # until we CAN identify it. This means that these events will likely occur very quickly after one another
     # if the tracker already has GPS-connectivity, otherwise, they might be further apart!

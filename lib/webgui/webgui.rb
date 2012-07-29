@@ -6,6 +6,9 @@ require 'rack-flash'
 require 'active_record'
 require 'rest-client'
 require 'mysql2'
+require 'builder'
+require 'twilio-ruby'
+
 Dir.glob(File.dirname(__FILE__)+"/models/*.rb").each do |fi|
   require fi
 end
@@ -19,6 +22,8 @@ class WebGui < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :public_folder, Proc.new { File.join(root, 'views/public')}
 
+  set :twilio_sid, "AC7aad28b36ad141399cd3057da04103cc"
+  set :twilio_token, "b26da84950d227342f7545d026db51c3"
 
   register Sinatra::ContentFor
   
@@ -180,6 +185,9 @@ class WebGui < Sinatra::Base
     authorize!
     @session = @current_user.sessions.find_by_id(params[:session_id])
     if @session
+      capability = Twilio::Util::Capability.new(settings.twilio_sid, settings.twilio_token)
+      capability.allow_client_outgoing 'APcbd124a0d6fb21fe475d4191287e5773'
+      @twilio_token = capability.generate
       @in_map = true
       erb :map
     else
@@ -206,12 +214,19 @@ class WebGui < Sinatra::Base
     redirect "/"
   end
 
+  # Phone Integration
+  
+  post '/call' do 
+    @number = params['PhoneNumber']
+    builder :trial
+  end
+
 end
 
 
 ActiveRecord::Base.establish_connection(
   :adapter  => 'mysql2',
   :database => 'keyhole_development', 
-  :username => 'root', 
+  :username => 'bongo', 
   :password => ''
 )

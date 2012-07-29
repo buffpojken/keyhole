@@ -13,7 +13,7 @@ require 'json'
 
 EventMachine.run{
     
-  $db = EventMachine::MySQL.new(:host => "localhost", :username => "root", :database => "keyhole_development")
+  $db = EventMachine::MySQL.new(:host => "localhost", :username => "bongo", :database => "keyhole_development")
   # When running multiple 
   $channels    = {}
   $clients    = {}
