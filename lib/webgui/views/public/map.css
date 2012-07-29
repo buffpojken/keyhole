@@ -44,6 +44,9 @@
 .top-bar li img{margin:4px 0px 0px 4px}
 #toggle-follow{background-image:url(/images/icons/link_icon&16.png); background-repeat:no-repeat; width:24px; height:24px;background-position:center center;}
 #toggle-follow.inactive{background-image:url(/images/icons/black_link_icon&16.png);}
+#clear-session{background-image:url(/images/icons/cancel_icon&16.png); background-repeat:no-repeat; width:24px; height:24px;background-position:center center;}
+#clear-session.inactive{background-image:url(/images/icons/cancel_icon&16.png);}
+
 
 /*		Devices		*/
 		

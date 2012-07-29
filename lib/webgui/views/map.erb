@@ -9,6 +9,7 @@
 						<img src="/images/icons/cursor_H_split_icon&16.png" />
 					</li>
 					<li id="toggle-follow" class=""></li>
+					<li id="clear-session" class=""></li>
 				</ul>
 			</div>
 			<ul id="device-list" class="devices">
@@ -17,7 +18,8 @@
 					<div class="color" style="background-color:#<%= device.color %>"></div>
 					<span class="device-name"><%= device.name %></span>
 					<div class="details">
-						 Update: <span class="updated-at">n/a</span>
+						Update: <span class="updated-at">n/a</span><br />
+						Track Length: <span class="track-length">n/a</span> m
 					</div>
 				</li>
 				<% end %>
@@ -42,10 +44,11 @@
 		</div>
 		
 <% content_for :javascripts do %>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
 	<script type="text/javascript">
 		window.keyhole_data 		= {'session_key':'<%= @session.session_key %>', 'host':'<%= request.host %>'};
 		window.keyhole_layers 	= <%= @session.layers.to_json %>;
+		window.keyhole_history 	= <%= @session.history.to_json %>;
 	</script>
 	<script type="text/javascript" src="/keyhole.js"></script>
 <% end %>

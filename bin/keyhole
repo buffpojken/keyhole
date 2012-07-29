@@ -7,7 +7,7 @@ require 'daemons'
 
 Daemons.run(File.dirname(__FILE__) + '/../lib/keyhole.rb', {
   :dir_mode   => :script, 
-  :dir        => '../tmp/logs',
+  :dir        => '/../tmp/logs',
   :backtrace  => true, 
   :multiple   => false, 
   :monitor    => false, 

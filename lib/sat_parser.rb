@@ -22,9 +22,14 @@ class SatParser < EventMachine::Connection
     if !self.connected 
       q = $db.query("select session_key from sessions where id = (select session_id from devices where imei = '#{self.imei}')")
       q.callback do |res|
-          self.session_key = res.fetch_row.first
+        data = res.fetch_row
+        unless data 
+          $channels["global"] << JSON.generate({:event => 'error', :type => 'tracker', :message => "A device with IMEI:#{self.imei} tried to connect but is not active?"})                    
+        else
+          self.session_key = data.first
           self.connected = true
-          $channels[self.session_key] << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei})
+          $channels[self.session_key] << JSON.generate({:event => 'connect', :type => 'tracker', :id => self.imei})          
+        end
       end    
       q.errback do |res|
         puts res.inspect
@@ -111,25 +116,25 @@ class SatParser < EventMachine::Connection
   private
   
   def parse_lat(lat)
-    fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
-       sum = lat[1..2].to_f + fraction
-       if(lat[0] == 'S')
-         return -sum
-       else 
-         return sum
-       end 
-
+    # fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
+    #    sum = lat[1..2].to_f + fraction
+    #    if(lat[0] == 'S')
+    #      return -sum
+    #    else 
+    #      return sum
+    #    end 
+    lat
   end
   
   def parse_lng(lng)
-    fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
-    sum = lng[1..3].to_f + fraction
-    if(lng[0] == 'W')
-      return -sum
-    else 
-      return sum
-    end
-
+    # fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
+    # sum = lng[1..3].to_f + fraction
+    # if(lng[0] == 'W')
+    #   return -sum
+    # else 
+    #   return sum
+    # end
+    lng
   end
     
 end

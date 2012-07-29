@@ -5,23 +5,16 @@ class Device < ActiveRecord::Base
   
   has_many :locations, :foreign_key => "tracker_identifier", :primary_key => "imei", :dependent => :destroy
   
-  before_create :generate_color
-  
-  def latest_locations(limit = 10)
-    return self.locations.find(:all, :order => "created_at desc", :limit => limit)
+  def clear!
+    return self.locations.destroy_all
   end
-  
-  private
-  
-  # This is ugly and must be killed! .daniel
-  def generate_color
-    a = RestClient.post "http://young-fire-8657.heroku.com/", {
-      :file => File.new(File.join(File.dirname(__FILE__), '..', 'views', 'public', 'images', 'blue_dot_circle.png'), 'rb'), 
-      :hex  => "#"+self.color
-    }
-    file = File.open(File.join(File.dirname(__FILE__),'..', 'views', 'public', 'images', self.color + '_marker.png'), 'w+')
-    file.puts a
-    file.close
+
+  def latest_locations(limit = 10)
+    if limit.nil? 
+      return self.locations.find(:all, :order => "created_at desc")
+    else      
+      return self.locations.find(:all, :order => "created_at desc", :limit => limit)
+    end
   end
   
 end

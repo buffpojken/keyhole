@@ -76,3 +76,10 @@ task :environment do
     require fi
   end  
 end
+
+namespace :devices do 
+  desc "Setup all currently available devices"
+  task :setup => :environment do 
+    # Setup tasks here...
+  end
+end

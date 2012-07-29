@@ -2,12 +2,7 @@ require 'socket'
 require 'rexml/document'
 
 def get_random_imei
-  t = rand(10)
-  if t >= 4
-    "$342432423432"
-  else
-    "$342432423431"
-  end
+  "$342432423432"
 end
 
 
@@ -18,7 +13,7 @@ data = []
 doc.elements.each('locations/location') do |p|
   d = rand(10)
   imei = get_random_imei
-  if d >= 4
+  if true
     loc = "#{imei},432432,432432,23423432,32424,#{p.get_text('lng').to_s},#{p.get_text('lat').to_s},13,4,23.23,23*12"    
   else
     loc = "#{imei},432432,432432,23423432,32424,E0,N0,13,4,23.23,23*12"    

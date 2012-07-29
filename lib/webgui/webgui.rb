@@ -193,6 +193,21 @@ class WebGui < Sinatra::Base
     end
   end
   
+  post "/map/:session_key/clear" do
+    authorize!
+    @session = @current_user.sessions.find_by_session_key(params[:session_key])
+    if @session
+      if @session.clear!
+        {:error => false}.to_json
+      else
+        {:error => true, :message => "Something went wrong!"}.to_json
+      end
+    else
+      flash[:error] = "Not your session, punk!"
+      redirect '/account'
+    end
+  end
+  
   # Authentication/Session/Login
   
   post "/" do 
@@ -211,12 +226,6 @@ class WebGui < Sinatra::Base
     redirect "/"
   end
 
-  # Phone Integration
-  
-  post '/call' do 
-    @number = params['PhoneNumber']
-    builder :trial
-  end
 
 end
 

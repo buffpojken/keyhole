@@ -32,6 +32,7 @@ EventMachine.run{
       end
       
       sid = $channels[path].subscribe { |msg| ws.send msg }      
+      gid = $channels['global'].subscribe{ |msg| ws.send msg }
       $webclients[sid] = true
 
       ws.onmessage do |msg|
@@ -42,6 +43,7 @@ EventMachine.run{
 
       ws.onclose{
         $channels[path].unsubscribe(sid)
+        $channels['global'].unsubscribe(gid)
         $webclients.delete(sid)
       }      
 

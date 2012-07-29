@@ -3,6 +3,7 @@
 Move along, there's nothing to see here yet.
 
 = Priority ToDo
+* Refactor keyhole.js - it should use proper templating and code-structure!
 * Show the latest X positions
 * Configuration for databases and ports
 * Adding support for uploading the KML-file, instead of using a URL

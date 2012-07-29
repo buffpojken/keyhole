@@ -15,6 +15,29 @@ class Session < ActiveRecord::Base
     return true
   end
   
+  def history
+    h = {}
+    devices.each do |d|
+      h[d.imei] = d.latest_locations(nil)
+    end
+    h
+  end
+  
+  def clear!
+    begin
+      Device.transaction do 
+        self.devices.each do |d|
+          d.clear!
+        end
+      end
+    rescue Exception => e
+      puts e.inspect
+      false
+    else
+      true
+    end
+  end
+  
   private
   
   def generate_session_key
