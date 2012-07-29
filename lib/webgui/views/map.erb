@@ -43,11 +43,9 @@
 		
 <% content_for :javascripts do %>
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-	<script type="text/javascript" src="//static.twilio.com/libs/twiliojs/1.0/twilio.min.js"></script>
 	<script type="text/javascript">
 		window.keyhole_data 		= {'session_key':'<%= @session.session_key %>', 'host':'<%= request.host %>'};
 		window.keyhole_layers 	= <%= @session.layers.to_json %>;
-		window.twilio_token 		= "<%= @twilio_token %>"; 
 	</script>
 	<script type="text/javascript" src="/keyhole.js"></script>
 <% end %>

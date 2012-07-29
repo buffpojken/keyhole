@@ -185,9 +185,6 @@ class WebGui < Sinatra::Base
     authorize!
     @session = @current_user.sessions.find_by_id(params[:session_id])
     if @session
-      capability = Twilio::Util::Capability.new(settings.twilio_sid, settings.twilio_token)
-      capability.allow_client_outgoing 'APcbd124a0d6fb21fe475d4191287e5773'
-      @twilio_token = capability.generate
       @in_map = true
       erb :map
     else
