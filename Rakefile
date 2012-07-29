@@ -80,6 +80,19 @@ end
 namespace :devices do 
   desc "Setup all currently available devices"
   task :setup => :environment do 
-    # Setup tasks here...
+    devices = JSON.parse(File.open("devices.js", 'r').readlines.join(""))
+    devices["devices"].each do |device|
+      unless Device.exists?(["imei = ?", device['imei']])
+        Device.create({
+          :name   => device['name'], 
+          :imei   => device['imei'], 
+          :color  => "%06x" % (rand * 0xffffff)
+        })
+        puts "Saved #{device['name']}"
+      else
+        puts "#{device['name']} already exists!"
+      end
+    end    
+    puts "#{devices["devices"].length.to_s} devices added!"
   end
 end
