@@ -17,3 +17,4 @@ gem 'builder', '2.1.2'
 gem 'activerecord', '3.0.8'
 gem 'jeweler'
 gem 'thin'
+
