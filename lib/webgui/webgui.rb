@@ -234,5 +234,5 @@ ActiveRecord::Base.establish_connection(
   :adapter  => 'mysql2',
   :database => 'keyhole_development', 
   :username => 'bongo', 
-  :password => ''
+  :password => 'ninjamagick'
 )

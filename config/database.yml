@@ -2,5 +2,5 @@ adapter: mysql2
 encoding: utf8
 database: keyhole_development
 username: bongo
-password:
+password: ninjamagick
 host: localhost
