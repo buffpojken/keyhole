@@ -9,7 +9,7 @@
 		<% @session.devices.each do |device| %>
 			<li>
 				<%= device.name %>
-				<a href="/configure/device/<%= device.id%>/disconnect">remove</a>
+				<a href="/configure/device/<%= device.id %>/edit">Edit</a>&nbsp;|&nbsp;<a href="/configure/device/<%= device.id%>/disconnect">remove</a>
 			</li>	
 		<% end %>
 	</ul>	
@@ -19,7 +19,7 @@
 		<% @devices.each do |device| %>
 			<li>
 				<%= device.name %>
-				<a href="/configure/device/<%= device.id%>/connect/<%= @session.id %>">add</a>
+				<a href="/configure/device/<%= device.id %>/edit">Edit</a>&nbsp;|&nbsp;<a href="/configure/device/<%= device.id%>/connect/<%= @session.id %>">add</a>
 			</li>	
 		<% end %>
 	</ul>	

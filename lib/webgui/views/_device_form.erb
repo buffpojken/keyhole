@@ -1,12 +1,12 @@
 <form action="/configure/device/new" method="post">
 
 
-		<input type="text" name="device[name]" placeholder="name"/>
+		<input type="text" name="device[name]" value="<%= @device.name %>" placeholder="name"/>
 		<br />
-		<input type="text" name="device[imei]" placeholder="imei"/>
+		<input type="text" name="device[imei]" value="<%= @device.imei %>" placeholder="imei"/>
 		<br />
-		<div class="colorsquare">color</div>
-		<input type="hidden" name="device[color]" class="color-input" />
+		<div class="colorsquare" style="background-color:#<%= @device.color %>">color</div>
+		<input type="hidden" name="device[color]" value="<%= @device.color %>" class="color-input" />
 		<br /><br />
 		<input type="submit" value="Go!" />
 		

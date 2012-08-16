@@ -155,17 +155,25 @@ class WebGui < Sinatra::Base
   end
   
   get "/configure/device/new" do 
+    @device = Device.new
     erb :new_device
   end
   
   post '/configure/device/new' do 
-    device = Device.create(params[:device])
-    if device && device.errors.empty?
-      flash[:notice] = "Device created"
+    puts params[:device].inspect
+    device = Device.find_or_create_by_imei(params[:device][:imei], params[:device])
+    device.attributes = params[:device]
+    if device && device.save && device.errors.empty?
+      flash[:notice] = "Data saved"
       redirect '/configure'
     else
-      flash[:error] = "Could not create new device"
+      flash[:error] = "Could not save"
     end
+  end
+  
+  get '/configure/device/:id/:edit' do
+    @device = Device.find(params[:id])
+    erb :edit_device
   end
 
   get '/configure/device/:id/disconnect' do 
