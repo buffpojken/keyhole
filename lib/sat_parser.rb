@@ -116,23 +116,25 @@ class SatParser < EventMachine::Connection
   private
   
   def parse_lat(lat)
-    fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
-       sum = lat[1..2].to_f + fraction
-       if(lat[0] == 'S')
-         return -sum
-       else 
-         return sum
-       end 
+    # fraction = ((lat[3..4].to_f * 60) + (lat[5..9].to_f*60.0)) / 3600.0
+    #    sum = lat[1..2].to_f + fraction
+    #    if(lat[0] == 'S')
+    #      return -sum
+    #    else 
+    #      return sum
+    #    end 
+    lat
   end
   
   def parse_lng(lng)
-    fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
-    sum = lng[1..3].to_f + fraction
-    if(lng[0] == 'W')
-      return -sum
-    else 
-      return sum
-    end
+    # fraction = ((lng[4..5].to_f * 60) + (lng[6..10].to_f*60.0)) / 3600.0
+    # sum = lng[1..3].to_f + fraction
+    # if(lng[0] == 'W')
+    #   return -sum
+    # else 
+    #   return sum
+    # end
+    lng
   end
     
 end

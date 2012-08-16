@@ -2,7 +2,7 @@ require 'socket'
 require 'rexml/document'
 
 def get_random_imei
-  "$342432423432"
+  "$357248015492428"
 end
 
 

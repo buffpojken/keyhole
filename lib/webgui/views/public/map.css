@@ -145,3 +145,16 @@
 
 .toast {display: none; position: fixed; z-index: 99999; width: 100%; text-align: center; bottom: 2em;}
 .toast .message {display: inline-block; color: #fff; padding: 10px; border-radius: 5px; box-shadow: 2px 2px 2px rgba(0,0,0,0.7); -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.7); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.2em; background: #737272; background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #3B3B3B), color-stop(1, #000000));opacity:1}
+
+.maplabel{
+  color: white;
+  background-color: black;
+	padding:3px;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  width: 60px;     
+  border: 2px solid black;
+  white-space: nowrap;
+}
